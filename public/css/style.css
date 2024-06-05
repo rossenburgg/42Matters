@@ -1,0 +1,139 @@
+/* Placeholder for custom styles */
+
+/* Add basic styles for light and dark themes */
+
+/* Further customization for other elements based on theme can be added here */
+
+@media (max-width: 768px) {
+  /* Completely hide the sidebar on mobile devices */
+  .admin-sidebar {
+    display: none;
+  }
+
+  /* Styles for floating drawer icon on mobile devices */
+  .drawer-toggle-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050; /* Ensure it's above other content */
+  }
+}
+
+/* Notification bell and dropdown styles */
+.notification-bell {
+  cursor: pointer;
+  position: relative;
+}
+
+.notification-dropdown {
+  display: none; /* Initially hidden */
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 1050; /* Ensure it's above other content */
+  background-color: #fff;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  width: 300px;
+  border-radius: 4px;
+}
+
+.notification-dropdown.active {
+  display: block; /* Show dropdown when active */
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item:hover {
+  background-color: #f0f0f0;
+}
+
+body {
+  background-color: #121212 !important;
+  color: #ffffff;
+}
+
+.bg-dark {
+  background-color: #1c1c1c !important;
+}
+
+.text-dark {
+}
+
+.card {
+  background-color: #1c1c1c !important;
+}
+
+.card-title, .card-text {
+  color: #ffffff !important;
+}
+
+.modal-content {
+  background-color: #1c1c1c !important;
+  color: #ffffff;
+}
+
+.offcanvas {
+  background-color: #1c1c1c !important;
+  color: #ffffff;
+}
+
+.dropdown-menu {
+  background-color: #1c1c1c !important;
+  color: #ffffff !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+/* Dark theme styles for input fields */
+input, select, textarea {
+  background-color: #1c1c1c !important;
+  color: #ffffff !important;
+  border: 1px solid #333 !important;
+}
+
+/* Dark theme styles for nav-segment */
+.nav-segment {
+  background-color: #1c1c1c !important;
+  border-radius: 25px;
+}
+
+.nav-segment .nav-link {
+  background-color: #1c1c1c !important;
+  color: #ffffff !important;
+  border: 1px solid #333 !important;
+  border-radius: 20px;
+  margin: 5px;
+}
+
+.nav-segment .nav-link.active {
+  background-color: #333 !important;
+  color: #ffffff !important;
+}
+
+/* Hide nav scroller arrows */
+.hs-nav-scroller-horizontal .hs-nav-scroller-arrow-prev, 
+.hs-nav-scroller-horizontal .hs-nav-scroller-arrow-next {
+  display: none !important;
+}
+
+/* Ensure the overflow container matches the dark theme */
+.hs-nav-scroller-horizontal {
+  background-color: #121212 !important;
+}
+
+h4,h3 {
+  color: #ffffff !important;
+}

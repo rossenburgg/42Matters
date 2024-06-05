@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/_head.ejs') %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shepherd.js/8.0.0/css/shepherd.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.13/lottie.min.js"></script>
+
+  <style>
+    body {
+      background-color: #121212;
+      color: #E0E0E0;
+      font-family: 'Roboto', sans-serif;
+    }
+    .header {
+      background-color: #000;
+      padding: 10px 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header .brand-logo img {
+      height: 40px;
+    }
+    .header .profile-icon img {
+      height: 32px;
+      border-radius: 50%;
+      background-color: #1DB954;
+      padding: 5px;
+    }
+    .content {
+      padding: 20px;
+    }
+    .profile-info {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #222;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .profile-info .avatar-container {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin-right: 10px;
+    }
+    .profile-info .avatar {
+      border-radius: 50%;
+      width: 70%;
+      height: 70%;
+      top: 51%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      position: absolute;
+    }
+    .profile-info .lottie-avatar-frame {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+    .profile-info h3 {
+      margin: 0;
+      flex-grow: 1;
+    }
+    .profile-info .vip {
+      font-weight: bold;
+      color: #1DB954;
+    }
+    .wallet-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .info-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #222;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .info-card img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+    .info-card .details {
+      display: flex;
+      align-items: center;
+    }
+    .info-card h4 {
+      margin: 0;
+      color: #1DB954;
+      font-size: 1em;
+    }
+    .info-card p {
+      margin: 0;
+      color: #ccc;
+      font-size: 0.8em;
+    }
+    .activity-section {
+      margin-bottom: 20px;
+    }
+    .activity-section h4 {
+      margin: 0 0 10px 0;
+    }
+    .pagination-info {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .search-bar {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .search-bar input {
+      width: 100%;
+      max-width: 300px;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #333;
+      color: #fff;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .pagination button {
+      background-color: #444;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .pagination button:hover {
+      background-color: #555;
+    }
+    .pagination button[disabled] {
+      cursor: not-allowed;
+      background-color: #333;
+    }
+    .activity-cards {
+      display: none;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .activity-card {
+      background-color: #333;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      flex: 1 1 calc(50% - 20px);
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .activity-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    .activity-card img {
+      width: 100%;
+      max-height: 130px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .activity-card h3 {
+      margin: 10px 0;
+      font-size: 1.1em;
+    }
+    .activity-card .details {
+      text-align: center;
+    }
+    .details p {
+      margin: 3px 0;
+      font-size: 0.8em;
+      line-height: 1.2;
+    }
+    @media (min-width: 768px) {
+      .wallet-info {
+        flex-direction: row;
+      }
+      .activity-card {
+        flex: 1 1 calc(33.333% - 20px);
+      }
+    }
+    @media (min-width: 1024px) {
+      .profile-info {
+        padding: 20px 30px;
+      }
+      .wallet-info {
+        gap: 20px;
+      }
+      .info-card {
+        padding: 15px;
+      }
+      .activity-section h4 {
+        font-size: 1.5em;
+      }
+      .activity-card {
+        padding: 20px;
+      }
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #000;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+    .bottom-nav a {
+      color: #E0E0E0;
+      text-align: center;
+      text-decoration: none;
+      flex: 1;
+    }
+    .bottom-nav a.active {
+      color: #1DB954;
+    }
+    .bottom-nav a i {
+      display: block;
+      font-size: 24px;
+    }
+    .bottom-nav a span {
+      display: block;
+      font-size: 12px;
+    }
+    .skeleton {
+      background-color: #333;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      width: 100%;
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      animation: pulse 1.5s infinite;
+    }
+    .skeleton-img {
+      width: 100%;
+      height: 130px;
+      border-radius: 8px;
+      background-color: #444;
+      margin-bottom: 10px;
+    }
+    .skeleton-text {
+      width: 80%;
+      height: 10px;
+      background-color: #444;
+      border-radius: 4px;
+    }
+    .skeleton-text.short {
+      width: 50%;
+    }
+    @keyframes pulse {
+      0% {
+        background-color: #333;
+      }
+      50% {
+        background-color: #444;
+      }
+      100% {
+        background-color: #333;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <%- include('./partials/_header.ejs') %>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- Profile Info -->
+    <div class="profile-info">
+      <div class="avatar-container">
+        <div id="lottie-avatar-frame" class="lottie-avatar-frame"></div>
+        <img class="avatar" src="https://via.placeholder.com/50" alt="Profile Image">
+      </div>
+      <h3>Hi, <%= user.username %> <span class="vip"><%= user.tier %></span></h3>
+    </div>
+    <!-- Wallet Info -->
+    <div class="wallet-info">
+      <div class="info-card">
+        <div class="details">
+          <img src="https://via.placeholder.com/40" alt="Wallet Icon">
+          <div>
+            <h4>Wallet Balance</h4>
+            <p>Profits will be added here</p>
+          </div>
+        </div>
+        <h4><%= walletBalance %> USDT</h4>
+      </div>
+      <div class="info-card">
+        <div class="details">
+          <img src="https://via.placeholder.com/40" alt="Commission Icon">
+          <div>
+            <h4>Commission</h4>
+            <p>Commission Earned</p>
+          </div>
+        </div>
+        <h4><%= commission %> USDT</h4>
+      </div>
+    </div>
+    <!-- Activity Section -->
+    <div class="activity-section">
+      <h4>Start Optimization</h4>
+      <p class="pagination-info" id="paginationInfo">Page 1/1</p>
+    </div>
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search items...">
+    </div>
+    <!-- Skeleton Loading -->
+    <div id="skeletonContainer">
+      <div class="skeleton">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-text"></div>
+        <div class="skeleton-text short"></div>
+      </div>
+      <div class="skeleton">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-text"></div>
+        <div class="skeleton-text short"></div>
+      </div>
+      <div class="skeleton">
+        <div class="skeleton-img"></div>
+        <div class="skeleton-text"></div>
+        <div class="skeleton-text short"></div>
+      </div>
+    </div>
+    <!-- Activity Cards -->
+    <div class="activity-cards" id="activityCardsContainer">
+      <!-- Items will be populated here by JavaScript -->
+    </div>
+    <!-- Pagination -->
+    <div class="pagination" id="paginationContainer">
+      <!-- Pagination buttons will be populated here by JavaScript -->
+    </div>
+  </div>
+
+  <!-- Item Details Modal -->
+  <div class="modal fade" id="itemDetailsModal" tabindex="-1" aria-labelledby="itemDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="itemDetailsModalLabel">Item Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalItemDetails">
+          <!-- Item details will be populated here by JavaScript -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success purchase-button" data-bs-dismiss="modal">Purchase</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('./partials/_footer.ejs') %>
+
+  <!-- JS Plugins Init. -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shepherd.js/8.0.0/js/shepherd.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/vendor/typed.js/lib/typed.min.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let currentPage = 1;
+      const limit = 10;
+
+      // Initialize tour
+      if (!localStorage.getItem('tourSeen')) {
+        const tour = new Shepherd.Tour({
+          useModalOverlay: true,
+          defaultStepOptions: {
+            cancelIcon: {
+              enabled: true
+            },
+            classes: 'shepherd-theme-arrows',
+            scrollTo: { behavior: 'smooth', block: 'center' }
+          }
+        });
+
+        tour.addStep({
+          id: 'welcome',
+          text: 'Welcome to the Starting page! Let me show you around.',
+          buttons: [
+            {
+              text: 'Next',
+              action: tour.next
+            }
+          ]
+        });
+
+        tour.addStep({
+          id: 'profile-info',
+          text: 'Here you can see your profile information.',
+          attachTo: { element: '.profile-info', on: 'bottom' },
+          buttons: [
+            {
+              text: 'Back',
+              action: tour.back
+            },
+            {
+              text: 'Next',
+              action: tour.next
+            }
+          ]
+        });
+
+        tour.addStep({
+          id: 'wallet-info',
+          text: 'Here you can see your wallet balance and commission earned.',
+          attachTo: { element: '.wallet-info', on: 'bottom' },
+          buttons: [
+            {
+              text: 'Back',
+              action: tour.back
+            },
+            {
+              text: 'Next',
+              action: tour.next
+            }
+          ]
+        });
+
+        tour.addStep({
+          id: 'activity-section',
+          text: 'This is where you can start your optimization activities.',
+          attachTo: { element: '.activity-section', on: 'top' },
+          buttons: [
+            {
+              text: 'Back',
+              action: tour.back
+            },
+            {
+              text: 'Next',
+              action: tour.next
+            }
+          ]
+        });
+
+        tour.addStep({
+          id: 'activity-cards',
+          text: 'Here are the available activities. Click on a card to view more details and start.',
+          attachTo: { element: '.activity-cards', on: 'top' },
+          buttons: [
+            {
+              text: 'Back',
+              action: tour.back
+            },
+            {
+              text: 'Finish',
+              action: tour.complete
+            }
+          ]
+        });
+
+        tour.start();
+        localStorage.setItem('tourSeen', 'true');
+      }
+
+      // Fetch items
+      function fetchItems(page = 1, search = '') {
+        console.log('Fetching items...', { page, search });
+        document.getElementById('skeletonContainer').style.display = 'flex';
+        document.querySelector('.activity-cards').style.display = 'none';
+
+        fetch(`/api/items?page=${page}&limit=${limit}&search=${search}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            const activityCardsContainer = document.getElementById('activityCardsContainer');
+            const paginationContainer = document.getElementById('paginationContainer');
+            const paginationInfo = document.getElementById('paginationInfo');
+
+            // Clear previous items and pagination
+            activityCardsContainer.innerHTML = '';
+            paginationContainer.innerHTML = '';
+
+            // Update pagination info
+            paginationInfo.innerText = `Page ${data.currentPage}/${data.totalPages}`;
+
+            // Populate items
+            data.items.forEach(item => {
+              const card = document.createElement('div');
+              card.classList.add('activity-card');
+              card.setAttribute('data-item-id', item._id);
+              card.innerHTML = `
+                <img src="${item.picture}" alt="${item.name}">
+                <h3>${item.name}</h3>
+                <div class="details">
+                  <p>Price: ${item.price} USDT</p>
+                  <p>Total Amount: ${item.totalAmount} USDT</p>
+                  <p>Commission: ${item.commission} USDT</p>
+                  <p>Created at: ${new Date(item.createdAt).toLocaleDateString()}</p>
+                  <p>Task Code: ${item.taskCode || 'N/A'}</p>
+                </div>
+              `;
+              activityCardsContainer.appendChild(card);
+
+              card.addEventListener('click', function() {
+                fetch(`/api/item/${item._id}`)
+                  .then(response => response.json())
+                  .then(data => {
+                    document.getElementById('modalItemDetails').innerHTML = `
+                      <img src="${data.picture}" alt="${data.name}" style="width: 50px; height: 50px; border-radius: 8px; margin-bottom: 10px;">
+                      <h4>${data.name}</h4>
+                      <p>Price: ${data.price} USDT</p>
+                      <p>Total Amount: ${data.totalAmount} USDT</p>
+                      <p>Commission: ${data.commission} USDT</p>
+                      <p>Created at: ${new Date(data.createdAt).toLocaleDateString()}</p>
+                      <p>Task Code: ${data.taskCode || 'N/A'}</p>
+                    `;
+                    document.querySelector('.purchase-button').setAttribute('data-item-id', data._id);
+                    new bootstrap.Modal(document.getElementById('itemDetailsModal')).show();
+                  })
+                  .catch(error => console.error('Error fetching item details:', error));
+              });
+            });
+
+            // Populate pagination
+            for (let i = 1; i <= data.totalPages; i++) {
+              const button = document.createElement('button');
+              button.innerText = i;
+              button.disabled = i === data.currentPage;
+              button.addEventListener('click', () => fetchItems(i, search));
+              paginationContainer.appendChild(button);
+            }
+
+            document.getElementById('skeletonContainer').style.display = 'none';
+            document.querySelector('.activity-cards').style.display = 'flex';
+          })
+          .catch(error => {
+            console.error('Error fetching items:', error);
+            toastr.error('Failed to load items');
+            document.getElementById('skeletonContainer').style.display = 'none';
+          });
+      }
+
+      // Initial fetch
+      fetchItems();
+
+      // Search functionality
+      document.getElementById('searchInput').addEventListener('input', function() {
+        const searchValue = this.value;
+        fetchItems(1, searchValue);
+      });
+
+      // Handle purchase button click
+      document.querySelector('.purchase-button').addEventListener('click', function() {
+        const itemId = this.getAttribute('data-item-id');
+        fetch(`/api/purchase/${itemId}`, { method: 'POST' })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              toastr.success('Purchase successful!');
+            } else {
+              toastr.error('Purchase failed!');
+            }
+          })
+          .catch(error => {
+            console.error('Error making purchase:', error);
+            toastr.error('Purchase failed!');
+          });
+      });
+
+      // Initialize Lottie animation
+      var tier = "<%= user.tier %>";
+      var lottiePath;
+      var lottieSize;
+
+      switch(tier) {
+        case 'VIP1':
+          lottiePath = '/Animations/vip1.json';
+          lottieSize = { width: '81px', height: '81px' }; // Adjusted size for VIP1
+          break;
+        case 'VIP2':
+          lottiePath = '/Animations/vip2.json';
+          lottieSize = { width: '70px', height: '70px' }; // Current size for VIP2
+          break;
+        case 'VIP3':
+          lottiePath = '/Animations/vip3.json';
+          lottieSize = { width: '100px', height: '100px' }; // Adjusted size for VIP3
+          break;
+        default:
+          lottiePath = '/Animations/frames.json'; // default frame
+          lottieSize = { width: '70px', height: '70px' }; // Default size
+      }
+
+      console.log('Loading Lottie animation from path:', lottiePath);
+
+      var lottieFrame = document.getElementById('lottie-avatar-frame');
+      lottieFrame.style.width = lottieSize.width;
+      lottieFrame.style.height = lottieSize.height;
+
+      lottie.loadAnimation({
+        container: lottieFrame,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: lottiePath
+      });
+    });
+  </script>
+</body>
+</html>

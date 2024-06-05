@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" dir="" class="h-100">
+<head>
+  <!-- Required Meta Tags Always Come First -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Title -->
+  <title>Login | 42Matters </title>
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="./favicon.ico">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- CSS Implementing Plugins -->
+  <link rel="stylesheet" href="/vendor/bootstrap-icons/font/bootstrap-icons.css">
+
+  <!-- CSS Front Template -->
+  <%- include('partials/_head.ejs') %>
+
+  <style>
+    .form-control {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border: 1px solid #ced4da !important;
+    }
+    .form-control::placeholder {
+      color: #6c757d !important;
+    }
+    .form-control:focus {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      border-color: #80bdff !important;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    }
+    .input-group-append .input-group-text {
+      background-color: #ffffff !important;
+      border: 1px solid #ced4da !important;
+      border-left: 0 !important;
+    }
+    .loader {
+      display: none;
+      border: 8px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 8px solid #1DB954;
+      width: 40px;
+      height: 40px;
+      animation: spin 2s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body class="d-flex align-items-center min-h-100 bg-white">
+  <header id="header" class="navbar navbar-expand navbar-light navbar-absolute-top">
+    <div class="container-fluid">
+      <nav class="navbar-nav-wrap">
+        <!-- White Logo -->
+        <a class="navbar-brand d-none d-lg-flex" href="./index.html" aria-label="Front">
+          <img class="navbar-brand-logo" src="/svg/logos/logo-white.svg" alt="Logo">
+        </a>
+        <!-- End White Logo -->
+
+        <!-- Default Logo -->
+        <a class="navbar-brand d-flex d-lg-none" href="./index.html" aria-label="Front">
+          <img class="navbar-brand-logo" src="/svg/logos/logo.svg" alt="Logo">
+        </a>
+        <!-- End Default Logo -->
+
+        <div class="ms-auto">
+          <a class="link link-sm link-secondary" href="#" id="confettiLink">
+            <i class="bi-chevron-left small ms-1"></i> Confetti
+          </a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content" role="main" class="flex-grow-1">
+    <!-- Form -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-5 col-xl-4 d-none d-lg-flex justify-content-center align-items-center min-vh-lg-100 position-relative bg-dark" style="background-image: url(/svg/components/wave-pattern-light.svg);">
+          <div class="flex-grow-1 p-5">
+            <!-- Blockquote -->
+            <figure class="text-center">
+              <div class="mb-4">
+                <img class="avatar avatar-xl avatar-4x3" src="/svg/brands/mailchimp-white.svg" alt="Logo">
+              </div>
+
+              <blockquote class="blockquote blockquote-light">“ I have been using 42Matters as a part time and I never regretted ”</blockquote>
+
+              <figcaption class="blockquote-footer blockquote-light">
+                <div class="mb-3">
+                  <img class="avatar avatar-circle" src="/img/160x160/img9.jpg" alt="Image Description">
+                </div>
+
+                Djayness Rossenburg
+                <span class="blockquote-footer-source">Project Manager | BitPack</span>
+              </figcaption>        
+            </figure>
+            <!-- End Blockquote -->
+
+            <!-- Clients -->
+            <div class="position-absolute start-0 end-0 bottom-0 text-center p-5">
+              <div class="row justify-content-center">
+                <div class="col text-center py-3">
+                  <img class="avatar avatar-lg avatar-4x3" src="/svg/brands/fitbit-white.svg" alt="Logo">
+                </div>
+                <!-- End Col -->
+
+                <div class="col text-center py-3">
+                  <img class="avatar avatar-lg avatar-4x3" src="/svg/brands/business-insider-white.svg" alt="Logo">
+                </div>
+                <!-- End Col -->
+
+                <div class="col text-center py-3">
+                  <img class="avatar avatar-lg avatar-4x3" src="/svg/brands/capsule-white.svg" alt="Logo">
+                </div>
+                <!-- End Col -->
+              </div>
+              <!-- End Row -->
+            </div>
+            <!-- End Clients -->
+          </div>
+        </div>
+        <!-- End Col -->
+
+        <div class="col-lg-7 col-xl-8 d-flex justify-content-center align-items-center min-vh-lg-100">
+          <div class="flex-grow-1 mx-auto" style="max-width: 28rem;">
+            <!-- Heading -->
+            <div class="text-center mb-5 mb-md-7">
+              <h1 class="h2">Welcome back</h1>
+              <p>Login to manage your account.</p>
+            </div>
+            <!-- End Heading -->
+
+            <!-- Form -->
+            <% if (errorMessage) { %>
+              <div class="alert alert-danger" role="alert">
+                <%= errorMessage %>
+              </div>
+            <% } %>
+            <% if (successMessage) { %>
+              <div class="alert alert-success" role="alert">
+                <%= successMessage %>
+              </div>
+            <% } %>
+            <div class="loader" id="loader"></div>
+
+            <form action="/auth/login" method="POST" class="js-validate needs-validation">
+              <!-- Form -->
+              <div class="mb-4">
+                <label class="form-label" for="signupModalFormLoginUsername">Your username</label>
+                <input type="text" class="form-control form-control-lg" name="username" id="username" placeholder="johndoe" aria-label="johndoe" required>
+                <span class="invalid-feedback">Please enter a valid username.</span>
+              </div>
+              <!-- End Form -->
+
+              <!-- Form -->
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label class="form-label" for="signupModalFormLoginPassword">Password</label>
+
+                  <a class="form-label-link" href="./page-reset-password.html">Forgot Password?</a>
+                </div>
+
+                <div class="input-group input-group-merge" data-hs-validation-validate-class>
+                  <input type="password" class="js-toggle-password form-control form-control-lg" name="password" id="password" required 
+                        data-hs-toggle-password-options='{
+                         "target": "#changePassTarget",
+                         "defaultClass": "bi-eye-slash",
+                         "showClass": "bi-eye",
+                         "classChangeTarget": "#changePassIcon"
+                       }'>
+                  <a id="changePassTarget" class="input-group-append input-group-text" href="javascript:;">
+                    <i id="changePassIcon" class="bi-eye"></i>
+                  </a>
+                </div>
+
+                <span class="invalid-feedback">Please enter a valid password.</span>
+              </div>
+              <!-- End Form -->
+
+              <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary btn-lg">Log in</button>
+              </div>
+
+              <div class="text-center">
+                <p>Don't have an account yet? <a class="link" href="/auth/register">Sign up here</a></p>
+              </div>
+            </form>
+            <!-- End Form -->
+          </div>
+        </div>
+        <!-- End Col -->
+      </div>
+      <!-- End Row -->
+    </div>
+    <!-- End Form -->
+  </main>
+
+  <!-- Confetti Animation -->
+  <canvas id="confetti-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+
+  <!-- JS Global Compulsory  -->
+  <script src="/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JS Implementing Plugins -->
+  <script src="/vendor/hs-toggle-password/dist/js/hs-toggle-password.js"></script>
+
+  <!-- JS Front -->
+  <script src="/js/theme.min.js"></script>
+
+  <!-- Confetti JS -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <!-- JS Plugins Init. -->
+  <script>
+    (function() {
+      HSBsValidation.init('.js-validate', {
+        onSubmit: data => {
+          document.getElementById('loader').style.display = 'block';
+          // You can add additional actions here if needed, such as making an API call
+        }
+      })
+      new HSTogglePassword('.js-toggle-password')
+    })()
+
+    document.getElementById('confettiLink').addEventListener('click', function(event) {
+      event.preventDefault();
+      confetti({
+        particleCount: 200,
+        spread: 60
+      });
+    });
+  </script>
+</body>
+</html>

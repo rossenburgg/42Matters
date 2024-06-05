@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/_head.ejs') %>
+<body>
+<%- include('partials/_header.ejs') %>
+<main role="main" class="container mt-4">
+  <h2>Manage Your Tasks</h2>
+  <% if (tasks && tasks.length > 0) { %>
+    <ul id="taskList">
+      <% tasks.forEach(task => { %>
+        <li>
+          <p><strong>Task:</strong> <%= task.description %> (<%= task.status %>)</p>
+          <p><strong>Earnings:</strong> $<%= task.amountEarned %>. Commission: $<%= task.commission %></p>
+          <button onclick="startTask('<%= task._id %>')">Start Task</button>
+          <button onclick="submitTask('<%= task._id %>')">Submit Task</button>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>No tasks available. Please check back later.</p>
+  <% } %>
+</main>
+<%- include('partials/_footer.ejs') %>
+<script src="/js/taskManagement.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  window.startTask = async (taskId) => {
+    try {
+      const response = await fetch('/tasks/start', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ taskId }),
+      });
+      if (!response.ok) throw new Error('Failed to start task');
+      console.log('Task started successfully');
+      location.reload(); // Reload to reflect the updated status
+    } catch (err) {
+      console.error('Error starting task:', err);
+      alert('Error starting task. Please try again.');
+    }
+  };
+
+  window.submitTask = async (taskId) => {
+    try {
+      const response = await fetch('/tasks/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ taskId }),
+      });
+      if (!response.ok) throw new Error('Failed to submit task');
+      console.log('Task submitted successfully');
+      location.reload(); // Reload to reflect the updated status
+    } catch (err) {
+      console.error('Error submitting task:', err);
+      alert('Error submitting task. Please try again.');
+    }
+  };
+});
+</script>
+</body>
+</html>

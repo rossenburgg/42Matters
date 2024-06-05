@@ -1,0 +1,239 @@
+<style>
+  @media (max-width: 992px) {
+    .mobile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1rem;
+      background-color: #000; /* Black background */
+      height: 56px; /* Adjust height as needed */
+      position: sticky; /* Make the header sticky */
+      top: 0; /* Stick to the top */
+      z-index: 1000; /* Ensure it stays on top of other content */
+      color: white; /* White text color */
+    }
+    .mobile-header .brand-logo {
+      display: flex;
+      align-items: center;
+    }
+    .mobile-header .brand-logo img {
+      height: 40px; /* Adjust logo height as needed */
+    }
+    .mobile-header .icon-group {
+      display: flex;
+      align-items: center;
+    }
+    .mobile-header .profile-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px; /* Adjust width as needed */
+      height: 40px; /* Adjust height as needed */
+      background-color: #1DB954; /* Spotify green */
+      border-radius: 50%; /* Make it round */
+      padding: 3px; /* Add padding to create a ring effect */
+      margin-left: 10px; /* Space between icons */
+    }
+    .mobile-header .profile-icon img {
+      height: 100%; /* Make the image fill the container */
+      width: 100%; /* Make the image fill the container */
+      border-radius: 50%; /* Make the image itself round */
+      background-color: white; /* Background color inside the green ring */
+    }
+    .mobile-header .notification-icon {
+      margin-left: 10px; /* Space between icons */
+      color: white;
+      position: relative;
+      cursor: pointer;
+      font-size: 24px; /* Make the icon bigger */
+    }
+    .mobile-header .notification-icon .notification-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+    }
+    .desktop-header {
+      display: none;
+    }
+  }
+
+  @media (min-width: 993px) {
+    .mobile-header {
+      display: none;
+    }
+    .desktop-header {
+      display: block;
+    }
+  }
+
+  /* Make dropdown text white */
+  .dropdown-menu .dropdown-item {
+    color: white;
+    background-color: #343a40; /* Dark background for dropdown items */
+  }
+
+  .dropdown-menu .dropdown-item:hover {
+    background-color: #495057; /* Slightly lighter background on hover */
+  }
+
+  /* Shake animation */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
+  }
+
+  .shake {
+    animation: shake 0.5s; /* Duration of shake animation */
+    animation-iteration-count: infinite; /* Keep shaking */
+  }
+</style>
+
+<!-- Desktop Header -->
+<header class="desktop-header">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">42Matters</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <% if (session && session.userId) { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/deposit">Deposit</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/tasks">Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/history">Transaction History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/setup2fa">Setup 2FA</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/analytics">Analytics</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/logout">Logout</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="notificationIcon" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-user-id="<%= session.userId %>">
+              <i class="bi bi-bell-fill"></i> <span id="notificationCount">0</span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="notificationIcon" id="notificationDropdown">
+              <li><a class="dropdown-item" href="#">No notifications</a></li>
+            </ul>
+          </li>
+            <form class="form-inline my-2 my-lg-0">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="location.href='/set-light-theme'">Light Theme</button>
+              <button class="btn btn-outline-secondary my-2 my-sm-0 ml-2" type="button" onclick="location.href='/set-dark-theme'">Dark Theme</button>
+            </form>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/login">Login</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Header -->
+<header class="mobile-header">
+  <div class="brand-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify Logo">
+  </div>
+  <div class="icon-group">
+    <div class="profile-icon">
+      <img src="https://via.placeholder.com/24" alt="Profile Icon">
+    </div>
+    <div class="notification-icon" id="mobileNotificationIcon">
+      <a href="#" id="mobileNotificationIconLink" data-bs-toggle="dropdown" aria-expanded="false" data-user-id="<%= session.userId %>">
+        <i class="bi bi-bell-fill" style="color: white;"></i> 
+        <span id="mobileNotificationCount" class="notification-count">0</span>
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="mobileNotificationIconLink" id="mobileNotificationDropdown">
+        <li><a class="dropdown-item" href="#">No notifications</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const socket = io();
+    const notificationIcon = document.getElementById('notificationIcon');
+    const notificationDropdown = document.getElementById('notificationDropdown');
+    const notificationCount = document.getElementById('notificationCount');
+    const mobileNotificationIconLink = document.getElementById('mobileNotificationIconLink');
+    const mobileNotificationDropdown = document.getElementById('mobileNotificationDropdown');
+    const mobileNotificationCount = document.getElementById('mobileNotificationCount');
+    const mobileNotificationIcon = document.getElementById('mobileNotificationIcon');
+    const mobileNotificationBellIcon = mobileNotificationIcon.querySelector('.bi-bell-fill');
+    const userId = notificationIcon ? notificationIcon.getAttribute('data-user-id') : null;
+
+    function updateNotifications(count, notifications) {
+      notificationCount.innerText = count;
+      mobileNotificationCount.innerText = count;
+
+      if (notifications.length > 0) {
+        const notificationItems = notifications.map(notification =>
+          `<li><a class="dropdown-item" href="#">${notification.message}</a></li>`
+        ).join('');
+        notificationDropdown.innerHTML = notificationItems;
+        mobileNotificationDropdown.innerHTML = notificationItems;
+        mobileNotificationBellIcon.classList.add('shake'); // Add shake animation
+      } else {
+        notificationDropdown.innerHTML = '<li><a class="dropdown-item" href="#">No notifications</a></li>';
+        mobileNotificationDropdown.innerHTML = '<li><a class="dropdown-item" href="#">No notifications</a></li>';
+        mobileNotificationBellIcon.classList.remove('shake'); // Remove shake animation if no unread notifications
+      }
+    }
+
+    if (userId) {
+      socket.on('connect', function() {
+        socket.emit('register', userId);
+      });
+
+      socket.on('notification count', function(count) {
+        fetch(`/api/notifications`)
+          .then(response => response.json())
+          .then(data => {
+            console.log('Notifications fetched:', data);
+            updateNotifications(count, data.notifications);
+          })
+          .catch(error => {
+            console.error('Error fetching notifications:', error);
+            notificationDropdown.innerHTML = '<li><a class="dropdown-item" href="#">Error fetching notifications</a></li>';
+            mobileNotificationDropdown.innerHTML = '<li><a class="dropdown-item" href="#">Error fetching notifications</a></li>';
+          });
+      });
+
+      socket.on('new notification', function(notification) {
+        const newNotification = `<li><a class="dropdown-item" href="#">${notification.message}</a></li>`;
+        notificationDropdown.innerHTML = newNotification + notificationDropdown.innerHTML;
+        mobileNotificationDropdown.innerHTML = newNotification + mobileNotificationDropdown.innerHTML;
+        mobileNotificationBellIcon.classList.add('shake'); // Add shake animation for new notification
+      });
+    }
+
+    notificationIcon.addEventListener('click', function() {
+      notificationDropdown.classList.toggle('show');
+    });
+
+    mobileNotificationIconLink.addEventListener('click', function() {
+      mobileNotificationDropdown.classList.toggle('show');
+    });
+  });
+</script>
+

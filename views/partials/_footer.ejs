@@ -1,0 +1,140 @@
+<footer class="footer bg-dark">
+  <div class="container text-center my-2 desktop-footer">
+    <span>Copyright &copy; <%= 1900 + new Date().getYear() %> 42Matters</span>
+  </div>
+</footer>
+
+<!-- Bottom Navigation for Mobile Devices -->
+<div class="bottom-nav">
+  <a href="/" class="nav-item" id="homeNavItem">
+    <i class="bi bi-house bottom-nav-icon"></i>
+    <span>Home</span>
+  </a>
+  <a href="/starting" class="nav-item" id="startingNavItem">
+    <i class="bi bi-spotify bottom-nav-icon"></i>
+    <span>Starting</span>
+  </a>
+  <a href="/records" class="nav-item" id="recordsNavItem">
+    <i class="bi bi-journal-text bottom-nav-icon"></i>
+    <span>Records</span>
+  </a>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="/js/theme-custom.js"></script>
+<!-- Include Toastr JS and other dependencies -->
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="/js/toastrNotifications.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="/js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    <% if (typeof notifications !== 'undefined' && notifications.length > 0) { %>
+        <% notifications.forEach(function(notification) { %>
+            toastr.<%= notification.type %>('<%= notification.message %>');
+        <% }); %>
+    <% } %>
+
+    // Bottom navigation active state
+    function setActiveNavItem() {
+      const path = window.location.pathname;
+      document.querySelectorAll('.bottom-nav a').forEach(function(navItem) {
+        if (navItem.getAttribute('href') === path) {
+          navItem.classList.add('active');
+        } else {
+          navItem.classList.remove('active');
+        }
+      });
+    }
+
+    setActiveNavItem();
+
+    document.querySelectorAll('.bottom-nav a').forEach(function(navItem) {
+      navItem.addEventListener('click', function() {
+        document.querySelector('.bottom-nav .active').classList.remove('active');
+        navItem.classList.add('active');
+      });
+    });
+});
+</script>
+
+<style>
+  .bottom-nav {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #1a1a1a;
+      border-top: 1px solid #444;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-around;
+      padding: 5px 0; /* Reduced padding to make it more compact */
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .bottom-nav a {
+      text-align: center;
+      flex-grow: 1;
+      padding: 5px; /* Reduced padding to make it more compact */
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .bottom-nav a.active, .bottom-nav a:hover {
+      color: #1DB954; /* Spotify green */
+      transform: scale(1.1);
+    }
+
+    .bottom-nav-icon {
+      font-size: 24px;
+      display: block;
+      margin-bottom: 2px; /* Reduced margin to make it more compact */
+    }
+
+    .bottom-nav span {
+      font-size: 12px;
+      display: block;
+    }
+
+    .desktop-footer {
+      display: none;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .bottom-nav {
+      display: none;
+    }
+  }
+
+  /* Make dropdown text white */
+  .dropdown-menu .dropdown-item {
+    color: white;
+    background-color: #343a40; /* Dark background for dropdown items */
+  }
+
+  .dropdown-menu .dropdown-item:hover {
+    background-color: #495057; /* Slightly lighter background on hover */
+  }
+
+  /* Shake animation */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
+  }
+
+  .shake {
+    animation: shake 0.5s; /* Duration of shake animation */
+    animation-iteration-count: infinite; /* Keep shaking */
+  }
+</style>

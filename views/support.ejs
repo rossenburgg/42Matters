@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/_head.ejs') %>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var socket = io();
+
+      document.querySelector('#support-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var message = document.querySelector('#message').value;
+        socket.emit('support message', message, (response) => {
+          console.log('Server response:', response);
+        });
+        document.querySelector('#message').value = ''; // Clear the input after sending
+      });
+
+      socket.on('support message', function(msg) {
+        var item = document.createElement('li');
+        item.textContent = msg;
+        document.querySelector('#messages').appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    });
+  </script>
+</head>
+<body>
+  <%- include('partials/_header.ejs') %>
+  <h1>Customer Support</h1>
+  <ul id="messages"></ul>
+  <form id="support-form" action="">
+    <input id="message" autocomplete="off" /><button>Send</button>
+  </form>
+  <%- include('partials/_footer.ejs') %>
+</body>
+</html>

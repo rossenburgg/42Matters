@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/_head.ejs') %>
+  <title>Deposit - 42Matters</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #121212;
+      color: #E0E0E0;
+      font-family: 'Roboto', sans-serif;
+    }
+    .container {
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 50px;
+    }
+    h1 {
+      color: #1DB954; /* Spotify green */
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2em;
+      font-weight: bold;
+    }
+    .form-label {
+      color: #bbb;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .form-control {
+      background-color: #333;
+      color: #E0E0E0;
+      border: none;
+      height: 50px;
+      padding: 10px;
+      font-size: 1em;
+    }
+    .form-control:focus {
+      background-color: #444;
+      color: #fff;
+      border-color: #1DB954;
+      box-shadow: 0 0 5px rgba(29, 185, 84, 0.5);
+    }
+    .btn-primary {
+      background-color: #1DB954;
+      border: none;
+      color: #fff;
+      padding: 15px 20px;
+      font-size: 1.2em;
+      border-radius: 10px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      width: 100%;
+    }
+    .btn-primary:hover {
+      background-color: #1a9e45;
+      transform: scale(1.05);
+    }
+    .btn-info {
+      background-color: #007bff; /* Bootstrap blue */
+      border: none;
+      color: #fff;
+      padding: 15px 20px;
+      font-size: 1.2em;
+      border-radius: 10px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      width: 100%;
+    }
+    .btn-info:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+    .balance-card {
+      background-color: #1DB954; /* Spotify green */
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 30px;
+      font-size: 1.5em;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .balance-card:hover {
+      transform: translateY(-10px);
+    }
+    .balance-card .amount {
+      font-size: 2.5em;
+      font-weight: bold;
+    }
+    .balance-card .currency {
+      font-size: 1.2em;
+      color: #fff;
+    }
+    .balance-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0.1) 60%, rgba(255, 255, 255, 0.1) 100%);
+      background-size: 50px 50px;
+      z-index: 1;
+    }
+    .balance-card > * {
+      position: relative;
+      z-index: 2;
+    }
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .nav-tabs .nav-link {
+      color: #ccc;
+      font-size: 1.2em;
+      padding: 10px 20px;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+    .nav-tabs .nav-link.active {
+      color: #1DB954;
+      font-weight: bold;
+      border-bottom: 2px solid #1DB954;
+    }
+    .content-section {
+      display: none;
+    }
+    .content-section.active {
+      display: block;
+    }
+    .loader {
+      display: none;
+      border: 4px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 4px solid #1DB954;
+      width: 40px;
+      height: 40px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      margin: 0 auto;
+    }
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      .balance-card {
+        padding: 15px;
+      }
+      .btn-primary, .btn-info {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <%- include('partials/_header.ejs') %>
+
+  <div class="container">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" href="#" id="tab-deposit">Deposit</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="tab-history">History</a>
+      </li>
+    </ul>
+
+    <div id="deposit-section" class="content-section active">
+      <h1>Deposit Funds</h1>
+      <div class="balance-card">
+        <div>Account Amount</div>
+        <div class="amount"><%= balance %></div>
+        <div class="currency">USDT</div>
+      </div>
+      <!-- Deposit Form -->
+      <form id="depositForm">
+        <div class="mb-3">
+          <label for="depositAmount" class="form-label">Amount to Deposit (USDT)</label>
+          <input type="number" class="form-control" id="depositAmount" name="depositAmount" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Deposit</button>
+      </form>
+      <button onclick="window.location='/support';" class="btn btn-info mt-3">Contact Support</button>
+    </div>
+
+    <div id="history-section" class="content-section">
+      <h1>Transaction History</h1>
+      <div class="loader" id="loader"></div>
+      <!-- Transaction History Content -->
+      <div id="transaction-history">
+        <!-- History content will be loaded here via AJAX -->
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/_footer.ejs') %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+  <script src="/js/toastrNotifications.js"></script>
+  <script src="/js/deposit.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const depositTab = document.getElementById('tab-deposit');
+      const historyTab = document.getElementById('tab-history');
+      const depositSection = document.getElementById('deposit-section');
+      const historySection = document.getElementById('history-section');
+      const loader = document.getElementById('loader');
+      const transactionHistory = document.getElementById('transaction-history');
+
+      depositTab.addEventListener('click', function() {
+        depositTab.classList.add('active');
+        historyTab.classList.remove('active');
+        depositSection.classList.add('active');
+        historySection.classList.remove('active');
+      });
+
+      historyTab.addEventListener('click', function() {
+        historyTab.classList.add('active');
+        depositTab.classList.remove('active');
+        historySection.classList.add('active');
+        depositSection.classList.remove('active');
+
+        // Load transaction history via AJAX
+        loader.style.display = 'block';
+        $.ajax({
+          url: '/api/transaction-history',
+          method: 'GET',
+          success: function(data) {
+            loader.style.display = 'none';
+            let historyHtml = '';
+            data.forEach(transaction => {
+              historyHtml += `
+                <div class="transaction-item">
+                  <p>Date: ${transaction.date}</p>
+                  <p>Amount: ${transaction.amount} USDT</p>
+                  <p>Status: ${transaction.status}</p>
+                </div>
+              `;
+            });
+            transactionHistory.innerHTML = historyHtml;
+          },
+          error: function() {
+            loader.style.display = 'none';
+            toastr.error('Failed to load transaction history');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

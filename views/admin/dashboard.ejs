@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('../partials/_head.ejs') %>
+    <link rel="stylesheet" href="/css/adminSidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Admin Dashboard - 42Matters</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #E0E0E0;
+            font-family: 'Roboto', sans-serif;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #1E1E1E;
+            transition: width 0.3s;
+        }
+        .sidebar .nav-link {
+            color: #E0E0E0;
+            padding: 10px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background-color: #1DB954;
+            color: #121212;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+        .tab-content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #1E1E1E;
+            border-radius: 8px;
+            margin-left: 15px;
+        }
+        .btn-primary {
+            background-color: #1DB954;
+            border-color: #1DB954;
+            color: #121212;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #17a74a;
+            border-color: #17a74a;
+        }
+        .btn {
+            margin: 10px;
+        }
+        .d-flex {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .d-md-none {
+            display: none !important;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                z-index: 10;
+                height: 100%;
+                width: 0;
+                overflow: hidden;
+                max-width: 80%;
+            }
+            .sidebar[data-sidebar-status="open"] {
+                width: 250px;
+            }
+            .tab-content {
+                margin-left: 0;
+                flex-grow: 1;
+            }
+            .d-md-none {
+                display: block !important;
+            }
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 9;
+                display: none;
+            }
+            .overlay.active {
+                display: block;
+            }
+            .hamburger-menu {
+                font-size: 24px;
+                cursor: pointer;
+                color: #1DB954;
+                padding: 10px;
+                position: fixed;
+                top: 50%;
+                right: 10px;
+                transform: translateY(-50%);
+                z-index: 11;
+                background-color: #121212;
+                border: 2px solid #1DB954;
+                border-radius: 50%;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include ('../partials/adminHeader.ejs') %>
+    <i class="fas fa-cog hamburger-menu d-md-none" id="sidebarToggle"></i>
+    <div class="overlay" id="overlay"></div>
+    <div class="d-flex">
+        <div class="nav flex-column nav-pills sidebar" id="v-pills-tab" role="tablist" aria-orientation="vertical" data-sidebar-status="closed">
+            <a class="nav-link active" id="v-pills-home-tab" href="/admin" role="tab"><i class="fas fa-users"></i> Home</a>
+            <a class="nav-link" id="v-pills-users-tab" href="/admin/users" role="tab"><i class="fas fa-users"></i> User Management</a>
+            <a class="nav-link" id="v-pills-purchases-tab" href="/admin/purchases" role="tab"><i class="fas fa-shopping-cart"></i> Purchase Management</a>
+            <a class="nav-link" id="v-pills-announcements-tab" href="/admin/announcements" role="tab"><i class="fas fa-bullhorn"></i> Announcements</a>
+            <a class="nav-link" id="v-pills-tasks-tab" href="/admin/tasks" role="tab"><i class="fas fa-tasks"></i> Task Management</a>
+            <a class="nav-link" id="v-pills-reports-tab" href="/admin/reports" role="tab"><i class="fas fa-chart-line"></i> Reports</a>
+        </div>
+        <div class="tab-content" id="v-pills-tabContent">
+            <div class="spinner" id="spinner"></div>
+            <!-- Content will be loaded here based on the active tab -->
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton = document.getElementById('sidebarToggle');
+            const sidebar = document.querySelector('.sidebar');
+            const tabContent = document.getElementById('v-pills-tabContent');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const spinner = document.getElementById('spinner');
+            const overlay = document.getElementById('overlay');
+
+            toggleButton.addEventListener('click', function () {
+                const isOpen = sidebar.getAttribute('data-sidebar-status') === 'open';
+                if (isOpen) {
+                    sidebar.style.width = '0';
+                    sidebar.setAttribute('data-sidebar-status', 'closed');
+                    overlay.classList.remove('active');
+                } else {
+                    sidebar.style.width = '250px';
+                    sidebar.setAttribute('data-sidebar-status', 'open');
+                    overlay.classList.add('active');
+                }
+            });
+
+            overlay.addEventListener('click', function () {
+                sidebar.style.width = '0';
+                sidebar.setAttribute('data-sidebar-status', 'closed');
+                overlay.classList.remove('active');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    const url = this.getAttribute('href');
+                    spinner.style.display = 'block'; // Show spinner
+                    fetch(url)
+                        .then(response => response.text())
+                        .then(html => {
+                            tabContent.innerHTML = html;
+                            spinner.style.display = 'none'; // Hide spinner
+                            if (window.innerWidth <= 768) {
+                                sidebar.style.width = '0';
+                                sidebar.setAttribute('data-sidebar-status', 'closed');
+                                overlay.classList.remove('active');
+                            }
+                        })
+                        .catch(err => {
+                            console.warn('Something went wrong.', err);
+                            spinner.style.display = 'none'; // Hide spinner
+                        });
+                });
+            });
+
+            // Load default tab
+            const defaultTab = document.querySelector('.nav-link.active');
+            if (defaultTab) {
+                defaultTab.click();
+            }
+        });
+
+        function confirmPurchase(purchaseId) {
+            fetch(`/admin/purchase/${purchaseId}/confirm`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    } else {
+                        alert('Failed to confirm purchase.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error confirming purchase:', error);
+                    alert('Error confirming purchase.');
+                });
+        }
+
+        function rejectPurchase(purchaseId) {
+            fetch(`/admin/purchase/${purchaseId}/reject`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    } else {
+                        alert('Failed to reject purchase.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error rejecting purchase:', error);
+                    alert('Error rejecting purchase.');
+                });
+        }
+    </script>
+</body>
+</html>

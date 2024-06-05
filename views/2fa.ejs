@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('partials/_head.ejs') %>
+    <title>Two-Factor Authentication</title>
+</head>
+<body>
+    <%- include ('partials/_header.ejs') %>
+    <div class="container mt-5">
+        <h2>Two-Factor Authentication (2FA)</h2>
+        <p>Please enter the verification code from your 2FA app.</p>
+        <form action="/auth/2fa/verify" method="post">
+            <div class="mb-3">
+                <label for="token" class="form-label">Verification Code</label>
+                <input type="text" class="form-control" id="token" name="token" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Verify</button>
+        </form>
+    </div>
+    <%- include ('partials/_footer.ejs') %>
+    <script src="/js/main.js"></script>
+</body>
+</html>

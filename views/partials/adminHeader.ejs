@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include ('../partials/_head.ejs') %>
+    <link rel="stylesheet" href="/css/adminSidebar.css">
+    <style>
+        @media (max-width: 768px) {
+            .floating-btn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+                display: block; /* Ensure the floating button is visible on mobile */
+            }
+            .navbar-toggler.d-lg-none {
+                display: none; /* Hide the default navbar toggler in mobile view */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/admin/dashboard">42Matters Admin</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/users">User Management</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/purchases">Purchase Management</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/announcements">Announcements</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/tasks">Task Management</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/reports">Reports</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Mobile Menu Icon for Sidebar Toggle -->
+                <!-- Floating button for mobile sidebar toggle -->
+                <button class="navbar-toggler d-lg-none floating-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarDrawer" aria-controls="sidebarDrawer">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <!-- Sidebar Drawer for Mobile -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarDrawer" aria-labelledby="sidebarDrawerLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarDrawerLabel">Admin Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/users">User Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/purchases">Purchase Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/announcements">Announcements</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/tasks">Task Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/reports">Reports</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="/js/adminSidebarDrawer.js"></script>
+</body>
+</html>

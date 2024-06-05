@@ -1,0 +1,98 @@
+<head>
+    <%- include ('../partials/_head.ejs') %>
+</head>
+<body>
+
+
+<div class="container mt-4">
+    <h2>Add New Task</h2>
+    <form id="addTaskForm">
+        <div class="mb-3">
+            <label for="userId" class="form-label">User</label>
+            <select class="form-select" id="userId" name="userId" required>
+                <!-- Users will be inserted here dynamically -->
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" name="description" required>
+        </div>
+        <div class="mb-3">
+            <label for="amountEarned" class="form-label">Amount Earned</label>
+            <input type="number" class="form-control" id="amountEarned" name="amountEarned" required>
+        </div>
+        <div class="mb-3">
+            <label for="commission" class="form-label">Commission</label>
+            <input type="number" class="form-control" id="commission" name="commission" required>
+        </div>
+        <div class="mb-3">
+            <label for="rating" class="form-label">Rating</label>
+            <input type="number" class="form-control" id="rating" name="rating" required>
+        </div>
+        <div class="mb-3">
+            <label for="uniqueCode" class="form-label">Unique Code</label>
+            <input type="text" class="form-control" id="uniqueCode" name="uniqueCode" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Task</button>
+    </form>
+</div>
+
+<div class="container mt-5">
+    <h2>Tasks List</h2>
+    <table class="table" id="tasksTable">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">User</th>
+                <th scope="col">Description</th>
+                <th scope="col">Amount Earned</th>
+                <th scope="col">Commission</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Unique Code</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Tasks will be inserted here dynamically -->
+        </tbody>
+    </table>
+</div>
+</body>
+<script src="/js/adminTasks.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchUsers().then(users => {
+            const userSelect = document.getElementById('userId');
+            users.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user._id;
+                option.textContent = user.username;
+                userSelect.appendChild(option);
+            });
+        }).catch(error => {
+            console.error('Error fetching users:', error);
+            alert('Failed to fetch users. Check console for details.');
+        });
+
+        fetchTasks();
+        document.getElementById('addTaskForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = {
+                userId: document.getElementById('userId').value,
+                description: document.getElementById('description').value,
+                amountEarned: document.getElementById('amountEarned').value,
+                commission: document.getElementById('commission').value,
+                rating: document.getElementById('rating').value,
+                uniqueCode: document.getElementById('uniqueCode').value,
+            };
+            addTask(formData).then(() => {
+                fetchTasks(); // Refresh the tasks list
+                // Reset form after submission
+                document.getElementById('addTaskForm').reset();
+            }).catch(error => {
+                console.error('Error adding task:', error);
+                alert('Failed to add task. Check console for details.');
+            });
+        });
+    });
+</script>
