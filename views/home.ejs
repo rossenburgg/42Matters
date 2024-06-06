@@ -234,8 +234,8 @@
             <div class=" gap-1">
               <span class="fw-semibold text-white ms-1">Balance: <span id="balance"><%= balance %></span> USDT</span>
             </div>
-            <p class="fw-semibold text-white ms-1">Commission: <span id="commission"><%= commission %></span> USDT</p>
-            <p class="fw-semibold text-white ms-1">Referral Rewards: <%= user.rewards %></p>
+            <div class="fw-semibold text-white ms-1">Commission: <span id="commission"><%= commission %></span> USDT</div>
+            <div class="fw-semibold text-white ms-1">Referral Rewards: <%= user.rewards %></div>
             <p class="fw-semibold text-white ms-1">Loyalty Points: <%= user.loyaltyPoints %></p>
             <p class="fw-semibold text-white ms-1">Tier: <%= user.tier %></p> <!-- Display user tier -->
             <% if (user.loyaltyPoints >= 100) { %>
