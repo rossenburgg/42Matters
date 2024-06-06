@@ -242,4 +242,96 @@ router.get('/auth/logout', (req, res) => {
   });
 });
 
+// Password Reset Routes
+router.get('/auth/forgot-password', (req, res) => {
+  const messages = { errorMessage: req.session.errorMessage, successMessage: req.session.successMessage };
+  req.session.errorMessage = null; // Clear the message after displaying it
+  req.session.successMessage = null; // Clear the message after displaying it
+  res.render('forgot-password', messages);
+});
+
+
+router.post('/auth/forgot-password', async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      req.session.errorMessage = 'No account with that email address exists.';
+      return res.redirect('/auth/forgot-password');
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    await user.save();
+
+    const resetURL = `http://${req.headers.host}/auth/reset-password/${token}`;
+    const mailOptions = {
+      to: user.email,
+      from: process.env.EMAIL_USER,
+      subject: 'Password Reset',
+      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
+             Please click on the following link, or paste this into your browser to complete the process:\n\n
+             ${resetURL}\n\n
+             If you did not request this, please ignore this email and your password will remain unchanged.\n`
+    };
+
+    await transporter.sendMail(mailOptions);
+    req.session.successMessage = 'An email has been sent to ' + email + ' with further instructions.';
+    res.redirect('/auth/login');
+  } catch (error) {
+    console.error('Error during password reset request:', error);
+    res.status(500).send('An error occurred during the password reset request.');
+  }
+});
+
+router.get('/auth/reset-password/:token', async (req, res) => {
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: req.params.token,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      req.session.errorMessage = 'Password reset token is invalid or has expired.';
+      return res.redirect('/auth/forgot-password');
+    }
+
+    res.render('reset-password', { token: req.params.token });
+  } catch (error) {
+    console.error('Error finding user for password reset:', error);
+    res.status(500).send('An error occurred during the password reset process.');
+  }
+});
+
+router.post('/auth/reset-password/:token', async (req, res) => {
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: req.params.token,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      req.session.errorMessage = 'Password reset token is invalid or has expired.';
+      return res.redirect('/auth/forgot-password');
+    }
+
+    if (req.body.password !== req.body.confirmPassword) {
+      req.session.errorMessage = 'Passwords do not match.';
+      return res.redirect('back');
+    }
+
+    user.password = await bcrypt.hash(req.body.password, 10);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    req.session.successMessage = 'Password has been reset. Please log in.';
+    res.redirect('/auth/login');
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).send('An error occurred while resetting the password.');
+  }
+});
+
 module.exports = router;

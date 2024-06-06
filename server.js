@@ -47,9 +47,7 @@ app.use(express.json());
 
 // Setting the templating engine to EJS
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views")); // Set the views directory
-// Serve static files
-app.use(express.static(path.join(__dirname, "public")));
+
 
 // Serve static files
 app.use(express.static("public"));
