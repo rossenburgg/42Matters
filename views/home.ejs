@@ -152,8 +152,21 @@
         justify-content: center;
         margin-top: 10px;
       }
+      .menu-list {
+        padding: 10px 0; /* Reduced padding for mobile */
+      }
+      .menu-item i {
+        font-size: 20px; /* Adjusted font size */
+      }
+      .menu-item span {
+        font-size: 12px; /* Adjusted font size */
+      }
+      .container.mt-5 {
+        padding-bottom: 60px; /* Prevent overlap with bottom nav */
+      }
     }
   </style>
+  
 </head>
 <body class="<%= themePreference %>">
   <%- include('./partials/_header.ejs') %>
@@ -218,10 +231,9 @@
                 <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b/512.gif" alt="👋" width="32" height="32">
               </picture>
             </h1>
-            <div class="d-flex gap-1">
+            <div class=" gap-1">
               <span class="fw-semibold text-white ms-1">Balance: <span id="balance"><%= balance %></span> USDT</span>
             </div>
-            <span class="fw-semibold text-white ms-1">Status: <%= accountStatus %></span>
             <p class="fw-semibold text-white ms-1">Commission: <span id="commission"><%= commission %></span> USDT</p>
             <p class="fw-semibold text-white ms-1">Referral Rewards: <%= user.rewards %></p>
             <p class="fw-semibold text-white ms-1">Loyalty Points: <%= user.loyaltyPoints %></p>
@@ -389,4 +401,6 @@
 </script>
 
 </body>
+</html>
+
 </html>
