@@ -411,6 +411,11 @@
     .balance-card-title {
       color: white !important;
     }
+    #lottie-animation {
+            width: 250px; /* Set the width of the container */
+            height: 250px; /* Set the height of the container */
+            margin: 0 auto; /* Center the container horizontally */
+        }
 </style>
 
 </head>
@@ -547,6 +552,8 @@
           
           
             <button class="start-btn">Start</button>
+            <div id="lottie-animation"></div>
+
         </div>
 
          <!-- Offcanvas -->
@@ -677,6 +684,18 @@
 });
 
 </script>
+<script>
+  // Get the container element
+  var animationContainer = document.getElementById('lottie-animation');
 
+  // Load the animation
+  lottie.loadAnimation({
+      container: animationContainer, // Specify the container element
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '/Animations/press.json' // Path to your Lottie animation JSON file
+  });
+</script>
 </body>
 </html>
