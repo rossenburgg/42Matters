@@ -306,13 +306,11 @@
   border-radius: 50%;
   position: relative;
   z-index: 2;
+  width: 70px;  /* Adjust width for mobile */
+  height: 70px; /* Adjust height for mobile */
 }
 
-/* Lottie animation frame styling */
-.lottie-avatar-frame {
-  position: relative;
-  z-index: 1;
-}
+
 
 
     @media (max-width: 768px) {
@@ -328,9 +326,9 @@
         .avatar {
     width: 50px;  /* Adjust width for mobile */
     height: 50px; /* Adjust height for mobile */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  
+   
+  
   }
 
 
@@ -608,48 +606,6 @@
   document.addEventListener('DOMContentLoaded', function() {
   // Initialize Lottie animation based on user tier
   var tier = "<%= user.tier %>";
-  var lottiePath;
-  var avatarSize = { width: '90px', height: '90px' };  // Default size
-  var avatarPosition = { top: '50%', transform: 'translate(-50%, -50%)' }; // Default position
-
-  switch(tier) {
-    case 'VIP1':
-      lottiePath = '/Animations/vip1.json';
-      avatarSize = { width: '84px', height: '85px' }; // Adjusted size for VIP1
-      avatarPosition = { top: '30%', transform: 'translate(-10%, -10%)' }; // Adjusted position for VIP1
-      break;
-    case 'VIP2':
-      lottiePath = '/Animations/vip2.json';
-      avatarSize = { width: '95px', height: '95px' }; // Current size for VIP2
-      avatarPosition = { top: '55%', transform: 'translate(-50%, -50%)' }; // Default position for VIP2
-      break;
-    case 'VIP3':
-      lottiePath = '/Animations/vip3.json';
-      avatarSize = { width: '75px', height: '75px' }; // Adjusted size for VIP3
-      avatarPosition = { top: '48%', transform: 'translate(-50%, -50%)' }; // Adjusted position for VIP3
-      break;
-    default:
-      lottiePath = '/Animations/frames.json'; // default frame
-      avatarSize = { width: '90px', height: '90px' }; // Default size
-      avatarPosition = { top: '50%', transform: 'translate(-50%, -50%)' }; // Default position
-  }
-
-  console.log('Loading Lottie animation from path:', lottiePath);
-
-  // Set avatar size and position
-  var avatar = document.querySelector('.avatar');
-  avatar.style.width = avatarSize.width;
-  avatar.style.height = avatarSize.height;
-  avatar.style.top = avatarPosition.top;
-  avatar.style.transform = avatarPosition.transform;
-
-  lottie.loadAnimation({
-    container: document.getElementById('lottie-avatar-frame'),
-    renderer: 'svg',
-    loop: true,
-    autoplay: true,
-    path: lottiePath
-  });
 
   // Handle daily reward claim
   var dailyRewardBtn = document.getElementById('dailyRewardBtn');
