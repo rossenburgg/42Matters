@@ -9,14 +9,43 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.13/lottie.min.js"></script>
   <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background:#121212;
-        color: #333;
-        margin: 0;
-        padding: 0;
-    }
-
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            position: relative; /* Ensure the overlay stays in the correct position */
+        }
+        #video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Black with 50% opacity */
+            z-index: 1;
+            transition: opacity 0.5s; /* Smooth transition for opacity change */
+            pointer-events: none; /* Allow clicking through the overlay */
+        }
+        /* Add a hover effect to demonstrate the slide opacity effect */
+        .overlay:hover {
+            opacity: 0.8; /* Increase opacity on hover */
+        }
+        .content {
+            position: relative;
+            z-index: 2; /* Ensure content is above the overlay */
+            padding: 20px; /* Add padding to avoid content overlapping video */
+        }
     .menu-list {
         display: flex;
         justify-content: space-around;
@@ -127,10 +156,13 @@
     .balance-card .amount {
         font-size: 2rem;
         margin: 10px 0;
+        color: #1DB954;
     }
 
     .balance-card .currency {
         font-size: 1rem;
+        color: #1DB954;
+
     }
 
     .optimization {
@@ -384,8 +416,12 @@
 </head>
 <body>
   <%- include('./partials/_header.ejs') %>
-
-    <div class="container">
+  <video autoplay muted loop id="video-background">
+    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+<div class="overlay"></div>
+    <div class="container content">
       <div class="marquee-container marquee-border">
         <div class="marquee">
           <p>Welcome to our platform! Enjoy our services and have a great experience. Stay tuned for more updates.</p>
@@ -498,15 +534,18 @@
         <div class="optimization mt-2">
             <h3>Start Optimization <span>40 /40</span></h3>
             <div class="icons">
-                <a href="#"><img src="https://via.placeholder.com/50" alt="Icon 1"></a>
-                <a href="#"><img src="https://via.placeholder.com/50" alt="Icon 2"></a>
-                <a href="#"><img src="https://via.placeholder.com/50" alt="Icon 3"></a>
-                <a href="#"><img src="https://via.placeholder.com/50" alt="Icon 4"></a>
-                <a href="#"><img src="https://via.placeholder.com/50" alt="Icon 5"></a>
-                <a href="#"><img src="https://via.placeholder.com/50" alt="Icon 6"></a>
-                <a href="#"><img src="https://via.placeholder.com/50" alt="Icon 7"></a>
-                
-            </div>
+              <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/slack-189693.png" alt="Slack"></a>
+              <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png" alt="GitHub"></a>
+              <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/skype-153-675721.png" alt="Skype"></a>
+              <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/spotify-11-432546.png" alt="Spotify"></a>
+              <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/netflix-11-432539.png" alt="Netflix"></a>
+              <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/dropbox-27-433365.png" alt="Dropbox"></a>
+              <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/linkedin-44-432357.png" alt="LinkedIn"></a>
+          </div>
+          
+          
+          
+          
             <button class="start-btn">Start</button>
         </div>
 
