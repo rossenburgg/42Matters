@@ -8,6 +8,8 @@ const authRoutes = require("./routes/authRoutes");
 const homeRoutes = require('./routes/homeRoutes'); // Added homeRoutes
 const walletInfoRoutes = require('./routes/walletInfoRoutes'); // Import walletInfoRoutes
 const depositRoutes = require('./routes/depositRoutes'); // Import depositRoutes
+const profileRoutes = require('./routes/profileRoutes'); // Import profil;eRoutes
+
 const taskRoutes = require('./routes/taskRoutes'); // Import taskRoutes
 const historyRoutes = require('./routes/historyRoutes'); // Import historyRoutes
 const supportRoutes = require('./routes/supportRoutes'); // Import supportRoutes
@@ -185,6 +187,8 @@ app.use(walletInfoRoutes);
 
 // Deposit Routes - Serve deposit page and functionality
 app.use(depositRoutes);
+
+app.use(profileRoutes);
 
 // Task Routes - Serve task management functionality
 app.use(taskRoutes);
