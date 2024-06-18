@@ -16,14 +16,12 @@
             padding: 0;
             position: relative; /* Ensure the overlay stays in the correct position */
         }
-        #video-background {
+        #lottie-background {
             position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             z-index: -1;
         }
         .overlay {
@@ -421,10 +419,8 @@
 </head>
 <body>
   <%- include('./partials/_header.ejs') %>
-  <video autoplay muted loop id="video-background">
-    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
+  <div id="lottie-background"></div>
+
 <div class="overlay"></div>
     <div class="container content">
       <div class="marquee-container marquee-border">
@@ -695,6 +691,17 @@
       loop: true,
       autoplay: true,
       path: '/Animations/press.json' // Path to your Lottie animation JSON file
+  });
+</script>
+<script>
+  var animationContainer = document.getElementById('lottie-background');
+
+  lottie.loadAnimation({
+      container: animationContainer,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '/Animation/press.json' // Path to your Lottie animation JSON file
   });
 </script>
 </body>
