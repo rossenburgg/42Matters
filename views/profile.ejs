@@ -8,92 +8,89 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.11/lottie.min.js"></script>
   <style>
-    /* Add this to your styles.css file */
-.profile-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #000; /* Dark theme background */
-  color: #fff; /* White text */
-}
+    /* styles.css */
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-.profile-card {
-  width: 100%;
-  max-width: 400px;
-  background-color: #1a1a1a;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  margin-bottom: 20px;
-}
+    .profile-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
 
-.profile-header {
-  display: flex;
-  align-items: center;
-}
+    .profile-card, .option-card {
+      width: 100%;
+      max-width: 400px;
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+    }
 
-.profile-icon {
-  width: 80px;
-  height: 80px;
-  margin-right: 20px;
-}
+    .profile-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-.profile-info {
-  flex-grow: 1;
-}
+    .profile-icon, .option-icon {
+      width: 80px;
+      height: 80px;
+      margin-right: 20px;
+    }
 
-.profile-balance {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
+    .profile-info {
+      flex-grow: 1;
+    }
 
-.balance-item {
-  flex: 1;
-  text-align: center;
-}
+    .profile-balance {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
 
-.option-card {
-  width: 100%;
-  max-width: 400px;
-  background-color: #1a1a1a;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
+    .balance-item {
+      flex: 1;
+      text-align: center;
+    }
 
-.option-icon {
-  width: 50px;
-  height: 50px;
-  margin-right: 20px;
-}
+    .option-card {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
 
-.option-info {
-  flex-grow: 1;
-}
+    .option-info {
+      flex-grow: 1;
+    }
 
+    h2, h3, p {
+      margin: 0;
+    }
   </style>
 </head>
 <body>
-    <%- include('./partials/_header.ejs') %>
+  <%- include('./partials/_header.ejs') %>
 
-  <div class="profile-container">
-    <div class="profile-card">
-      <div class="profile-header">
-        <div class="profile-icon">
-          <div id="profileLottie" class="lottie-animation"></div>
-        </div>
+  <main class="profile-container" role="main">
+    <section class="profile-card" aria-labelledby="profile-header">
+      <div class="profile-header" id="profile-header">
+        <div class="profile-icon" id="profileLottie" aria-hidden="true"></div>
         <div class="profile-info">
           <h2><%= user.username %></h2>
           <p>Invitation Code: <%= user.referralCode %></p>
-          <p>Credit Score: <%= user.loyaltyPoints %> %</p>
+          <p>Credit Score: <%= user.loyaltyPoints %>%</p>
         </div>
       </div>
-      <div class="profile-balance">
+      <div class="profile-balance" aria-labelledby="profile-balance-header">
         <div class="balance-item">
           <p>Wallet Amount</p>
           <h3><%= user.balance %> USDT</h3>
@@ -103,81 +100,76 @@
           <h3><%= user.commission %> USDT</h3>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="profile-options">
+    <section class="profile-options" aria-labelledby="profile-options-header">
+      <h3 id="profile-options-header" class="visually-hidden">Profile Options</h3>
       <div class="option-card">
-        <div class="option-icon">
-          <div id="depositLottie" class="lottie-animation"></div>
-        </div>
+        <div class="option-icon" id="depositLottie" aria-hidden="true"></div>
         <div class="option-info">
           <h3>Deposit</h3>
         </div>
       </div>
       <div class="option-card">
-        <div class="option-icon">
-          <div id="withdrawLottie" class="lottie-animation"></div>
-        </div>
+        <div class="option-icon" id="withdrawLottie" aria-hidden="true"></div>
         <div class="option-info">
           <h3>Withdraw</h3>
         </div>
       </div>
       <div class="option-card">
-        <div class="option-icon">
-          <div id="personalInfoLottie" class="lottie-animation"></div>
-        </div>
+        <div class="option-icon" id="personalInfoLottie" aria-hidden="true"></div>
         <div class="option-info">
           <h3>Personal Information</h3>
         </div>
       </div>
       <div class="option-card">
-        <div class="option-icon">
-          <div id="paymentMethodsLottie" class="lottie-animation"></div>
-        </div>
+        <div class="option-icon" id="paymentMethodsLottie" aria-hidden="true"></div>
         <div class="option-info">
           <h3>Payment Methods</h3>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
+  </main>
   <%- include('./partials/_footer.ejs') %>
 
   <script>
     // Load the Lottie animations
-    lottie.loadAnimation({
-      container: document.getElementById('profileLottie'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: '/Animations/press.json' // Update with actual path
-    });
-    lottie.loadAnimation({
-      container: document.getElementById('depositLottie'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: '/Animations/press.json' // Update with actual path
-    });
-    lottie.loadAnimation({
-      container: document.getElementById('withdrawLottie'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: '/Animations/press.json' // Update with actual path
-    });
-    lottie.loadAnimation({
-      container: document.getElementById('personalInfoLottie'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: '/Animations/press.json' // Update with actual path
-    });
-    lottie.loadAnimation({
-      container: document.getElementById('paymentMethodsLottie'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: '/Animations/press.json' // Update with actual path
+    document.addEventListener('DOMContentLoaded', () => {
+      lottie.loadAnimation({
+        container: document.getElementById('profileLottie'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/Animations/press.json'
+      });
+      lottie.loadAnimation({
+        container: document.getElementById('depositLottie'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/Animations/press.json'
+      });
+      lottie.loadAnimation({
+        container: document.getElementById('withdrawLottie'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/Animations/press.json'
+      });
+      lottie.loadAnimation({
+        container: document.getElementById('personalInfoLottie'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/Animations/press.json'
+      });
+      lottie.loadAnimation({
+        container: document.getElementById('paymentMethodsLottie'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: '/Animations/press.json'
+      });
     });
   </script>
 </body>
