@@ -127,43 +127,43 @@
     }
 
     .balance-cards {
-        display: flex;
-        justify-content: space-between;
-        margin: 20px 0;
-    }
+    display: flex;
+    flex-wrap: wrap; /* Allow cards to wrap to the next line on smaller screens */
+    justify-content: center; /* Center cards horizontally */
+    margin: 20px 0;
+}
 
-    .balance-card {
-        background: #1E1E1E;
-        color: white;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        text-align: center;
-        flex: 1;
-        margin: 0 10px;
-    }
+.balance-card {
+    background: #1E1E1E;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    flex: 1 1 300px; /* Each card should have a minimum width of 300px */
+    margin: 0 10px 20px; /* Add bottom margin for spacing */
+}
 
-    .balance-card h3 {
-        margin: 0;
-        font-size: 1.2rem;
-    }
+.balance-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
 
-    .balance-card p {
-        margin: 10px 0;
-        color: #777;
-    }
+.balance-card p {
+    margin: 10px 0;
+    color: #777;
+}
 
-    .balance-card .amount {
-        font-size: 2rem;
-        margin: 10px 0;
-        color: #1DB954;
-    }
+.balance-card .amount {
+    font-size: 2rem;
+    margin: 10px 0;
+    color: #1DB954;
+}
 
-    .balance-card .currency {
-        font-size: 1rem;
-        color: #1DB954;
-
-    }
+.balance-card .currency {
+    font-size: 1rem;
+    color: #1DB954;
+}
 
     .optimization {
         text-align: center;
