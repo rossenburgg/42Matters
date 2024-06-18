@@ -11,7 +11,7 @@
   <style>
     body {
         font-family: 'Arial', sans-serif;
-        background: linear-gradient(to right, #8e9eab, #eef2f3);
+        background:#121212;
         color: #333;
         margin: 0;
         padding: 0;
@@ -20,7 +20,7 @@
     .menu-list {
         display: flex;
         justify-content: space-around;
-        background-color: #fff;
+        background-color: #1E1E1E;
         padding: 15px 0;
         margin-bottom: 20px;
         border-radius: 8px;
@@ -94,6 +94,7 @@
 
     .header .welcome {
         font-size: 1rem;
+        color: white;
     }
 
     .balance-cards {
@@ -103,7 +104,8 @@
     }
 
     .balance-card {
-        background: #fff;
+        background: #1E1E1E;
+        color: white;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 20px;
@@ -251,7 +253,7 @@
     }
 
     .announcement {
-        background-color: #fff;
+        background-color: #1E1E1E;
         padding: 15px;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -374,6 +376,9 @@
       height: 160px;
       z-index: 1;
     }
+    .balance-card-title {
+      color: white !important;
+    }
 </style>
 
 </head>
@@ -389,11 +394,10 @@
         <div class="header">
             <div class="greeting">
               <div class="avatar-container mb-2 mb-sm-0">
-                <div id="lottie-avatar-frame" class="lottie-avatar-frame"></div>
                 <img class="avatar " src="https://via.placeholder.com/50" alt="User Picture">
          
               </div>
-                <h2>Hi, <span><%= username %>!</span><picture>
+                <h2 style="color: white;">Hi, <span><%= username %>!</span><picture>
                   <source srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b/512.webp" type="image/webp">
                   <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b/512.gif" alt="👋" width="30" height="30">
                 </picture></h2>
@@ -453,13 +457,13 @@
         <div class="balance-cards">
           
             <div class="balance-card">
-                <h3>Wallet Balance</h3>
+                <h3 class="balance-card-title">Wallet Balance</h3>
                 <p>Profits will be added here</p>
                 <div class="amount"><span id="balance"><%= balance %></span></div>
                 <div class="currency">USDT</div>
             </div>
             <div class="balance-card">
-                <h3>Commission</h3>
+                <h3 class="balance-card-title">Commission</h3>
                 <p>Commission Earned</p>
                 <div class="amount"><%= commission %></div>
                 <div class="currency">USDT</div>
@@ -529,12 +533,12 @@
         </div>
       </div>
         <div class="announcements-section mt-5">
-          <h2 class="text-black">Announcements</h2>
+          <h2 class="text-white">Announcements</h2>
           <% announcements.forEach(function(announcement) { %>
             <div class="announcement mb-3">
-              <h3 class="text-black"><%= announcement.title %></h3>
-              <p class="text-black"><%= announcement.content %></p>
-              <p class="text-black">Posted on: <%= announcement.createdAt.toDateString() %></p>
+              <h3 class="text-white"><%= announcement.title %></h3>
+              <p class="text-white"><%= announcement.content %></p>
+              <p class="text-white">Posted on: <%= announcement.createdAt.toDateString() %></p>
             </div>
           <% }); %>
         </div>
