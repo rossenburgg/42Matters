@@ -115,13 +115,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     @keyframes linkAnimation {
   0% {
-    transform: scale(1);
+    transform: scale(1.5);
   }
   50% {
-    transform: scale(1.1);
+    transform: scale(1.6);
   }
   100% {
-    transform: scale(1);
+    transform: scale(1.5);
   }
 }
     #startingNavItem {
@@ -129,25 +129,11 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 #startingNavItem .bottom-nav-icon {
-  font-size: 54px; /* Adjust the icon size */
-  position: absolute; /* Set position to absolute */
-  top: -70%; /* Align to the middle vertically */
-  left: 12%; /* Align to the middle horizontally */
   transform: translate(-50%, -50%); /* Center the icon */
   animation: linkAnimation 2s ease-in-out infinite; /* Change the animation duration to 3s */
 
 }
 
-#startingNavItem span {
-  font-size: 14px; /* Adjust the text size */
-  display: block; /* Display as block to allow for vertical centering */
-  position: absolute; /* Set position to absolute */
-  bottom: 5px; /* Adjust the position from the bottom */
-  left: 50%; /* Align to the middle horizontally */
-  transform: translateX(-50%); /* Center the text */
-  width: 100%; /* Ensure text takes full width */
-  text-align: center; /* Center the text */
-}
 
 
     .desktop-footer {
