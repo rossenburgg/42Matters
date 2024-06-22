@@ -17,6 +17,7 @@ router.get('/starting', isAuthenticated, async (req, res) => {
       console.log(`Displaying starting page for user: ${user.username}`);
       res.render('starting', {
         user: user,
+        username: user.username,
         walletBalance: user.balance,
         commission: user.commission,
         items: items, // Passing items to the view

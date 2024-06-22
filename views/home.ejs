@@ -525,6 +525,7 @@
 
 </head>
 <body>
+  
   <%- include('./partials/_header.ejs') %>
   <div id="lottie-background"></div>
 
@@ -538,8 +539,9 @@
         <div class="header">
             <div class="greeting">
               <div class="avatar-container mb-2 mb-sm-0">
-                <img class="avatar " src="https://via.placeholder.com/50" alt="User Picture">
-         
+                <span class="avatar avatar-xl avatar-circle">
+                  <img class="avatar-img" src="/img/160x160/img3.jpg" alt="Image Description">
+                </span>
               </div>
                 <h2 style="color: white;">Hi, <span><%= username %>!</span><picture>
                   <source srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b/512.webp" type="image/webp">

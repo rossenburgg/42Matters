@@ -2,10 +2,14 @@ const express = require('express');
 const router = express.Router();
 const isAuthenticated = require('./middleware/authMiddleware').isAuthenticated;
 const SupportRequest = require('../models/SupportRequest');
+const User = require('../models/User');
 
 // Route to render the support page
-router.get('/support', isAuthenticated, (req, res) => {
-  res.render('support');
+router.get('/support', isAuthenticated, async (req, res) => {
+  const userId = req.session.userId;
+  const user = await User.findById(userId);
+  res.render('support',  {username: user.username});
+  // console.log(user.username );
 });
 
 // Route to handle support request submission

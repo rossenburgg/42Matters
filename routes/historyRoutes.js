@@ -25,7 +25,7 @@ router.get('/history', isAuthenticated, async (req, res) => {
         // Calculate total pages
         const totalPages = Math.ceil(count / limit);
 
-        res.render('history', { tasks, totalPages, currentPage: page });
+        res.render('history', { username:user.username, tasks, totalPages, currentPage: page });
     } catch (error) {
         console.error(`Error fetching transaction history: ${error.message}`);
         console.error(error.stack);

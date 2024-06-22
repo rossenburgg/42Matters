@@ -17,7 +17,38 @@
       align-items: center;
     }
     .mobile-header .brand-logo img {
-      height: 40px; /* Adjust logo height as needed */
+      height:70px; /* Adjust logo height as needed */
+      margin-right: 10px; /* Space between logo and text */
+    }
+    .mobile-header .brand-logo .brand-text {
+      font-size: 1.5rem; /* Adjust text size as needed */
+      color: white; /* White text color */
+      position: relative; /* Needed for dripping effect */
+      font-family: 'Comic Sans MS', cursive, sans-serif; /* Comic style font */
+      text-shadow: 0 0 5px rgba(0,0,0,0.5); /* Add a shadow for more effect */
+    }
+    .mobile-header .brand-logo .brand-text:before, .mobile-header .brand-logo .brand-text:after {
+      content: '';
+      position: absolute;
+      bottom: -10px; /* Position the drips */
+      width: 4px;
+      height: 10px;
+      background: white; /* Same color as text */
+      animation: drip 1s infinite linear;
+    }
+    .mobile-header .brand-logo .brand-text:after {
+      left: 10px; /* Position the second drip */
+      animation-delay: 0.5s; /* Delay for second drip */
+    }
+    @keyframes drip {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(10px);
+        opacity: 0;
+      }
     }
     .mobile-header .icon-group {
       display: flex;
@@ -35,12 +66,8 @@
       margin-left: 10px; /* Space between icons */
       position: relative; /* Needed for dropdown */
       cursor: pointer; /* Make it clickable */
-    }
-    .mobile-header .profile-icon img {
-      height: 100%; /* Make the image fill the container */
-      width: 100%; /* Make the image fill the container */
-      border-radius: 50%; /* Make the image itself round */
-      background-color: white; /* Background color inside the green ring */
+      color: white; /* White text color */
+      font-size: 1.2rem; /* Adjust font size as needed */
     }
     .mobile-header .notification-icon {
       margin-left: 10px; /* Space between icons */
@@ -95,6 +122,7 @@
     animation-iteration-count: infinite; /* Keep shaking */
   }
 </style>
+
 
 <!-- Desktop Header -->
 <header class="desktop-header">
@@ -152,13 +180,22 @@
 <!-- Mobile Header -->
 <header class="mobile-header">
   <div class="brand-logo">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify Logo">
+    <img src="/logo.png" class="mattersLogo" alt="42Matters Logo">
+    <span class="brand-text">24Matters</span>
   </div>
   <div class="icon-group">
     <div class="dropdown">
       <div class="profile-icon" id="mobileProfileIcon" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://via.placeholder.com/24" alt="Profile Icon">
+        <% if (username) { %>
+          <%= username.charAt(0).toUpperCase() %>
+        <% } else { %>
+          <i class="fas fa-user"></i>
+        <% } %>
       </div>
+      
+      
+      
+      
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileProfileIcon">
         <li><a class="dropdown-item" href="/profile">Settings</a></li>
         <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>

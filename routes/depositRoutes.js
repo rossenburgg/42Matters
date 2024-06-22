@@ -4,6 +4,7 @@ const { isAuthenticated } = require('./middleware/authMiddleware');
 const User = require('../models/User');
 
 router.get('/deposit', isAuthenticated, async (req, res) => {
+
   try {
     const user = await User.findById(req.session.userId).exec();
     if (!user) {
@@ -11,7 +12,7 @@ router.get('/deposit', isAuthenticated, async (req, res) => {
       return res.redirect('/login');
     } else {
       console.log(`Serving deposit page for user: ${user.username}`);
-      res.render('deposit', { balance: user.balance });
+      res.render('deposit', {username: user.username, balance: user.balance });
     }
   } catch (error) {
     console.error(`Error fetching user info for deposit page: ${error.message}`);

@@ -121,7 +121,7 @@ router.get('/auth/setup2fa', async (req, res) => {
           console.error(err.stack);
           throw err;
         }
-        res.render('setup2fa', { user, qrCodeUrl: dataUrl, twoFactorEnabled: false });
+        res.render('setup2fa', { username:user.username, user, qrCodeUrl: dataUrl, twoFactorEnabled: false });
       });
     }
   } catch (error) {
@@ -160,12 +160,16 @@ router.post('/auth/setup2fa/verify', async (req, res) => {
   }
 });
 
-router.get('/auth/2fa', (req, res) => {
+router.get('/auth/2fa', async (req, res) => {
+  const userId = req.session.userId;
+  const user = await User.findById(userId);
+
   if (!req.session.tempUserId) {
     return res.redirect('/auth/login');
   }
-  res.render('2fa');
+  res.render('2fa', { username: user.username });
 });
+
 
 router.post('/auth/2fa/verify', async (req, res) => {
   if (!req.session.tempUserId) {

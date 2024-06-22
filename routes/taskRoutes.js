@@ -1,16 +1,22 @@
 const express = require('express');
 const Task = require('../models/Task');
 const { isAuthenticated } = require('./middleware/authMiddleware');
+const User = require('../models/User');
 
 const router = express.Router();
 
 // Fetch tasks for the logged-in user
 router.get('/tasks', isAuthenticated, async (req, res) => {
+  const userId = req.session.userId;
+  const user = await User.findById(userId)
+  const username = user.username;
+
+
   try {
     // Temporarily fetch all tasks for debugging purposes
     const tasks = await Task.find({});
     console.log('Fetched tasks:', tasks);
-    res.render('tasks', { tasks });
+    res.render('tasks', { username: username, tasks });
   } catch (err) {
     console.error('Error fetching tasks:', err.message);
     console.error(err.stack);

@@ -13,6 +13,8 @@ router.get('/profile', isAuthenticated, async (req, res) => {
       console.log(`Serving deposit page for user: ${user.username}`);
       res.render('profile', {
         user: user,
+        referral: user.referralCode,
+        username: user.username,
         walletBalance: user.balance,
         commission: user.commission,
         themePreference: req.session.themePreference || 'light'

@@ -6,9 +6,10 @@ const router = express.Router();
 // Serve the analytics dashboard page
 router.get('/analytics', async (req, res) => {
   try {
+    const user = req.user; // Assuming user is available in the request object
     const tasks = await Task.find({}); // Adjust the query as needed to fetch relevant data
     console.log('Analytics data fetched successfully.');
-    res.render('analytics', { tasks });
+    res.render('analytics', { username: user, tasks });
   } catch (err) {
     console.error('Error fetching analytics data:', err.message);
     console.error(err.stack);
