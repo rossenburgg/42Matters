@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Error handling for WebSocket connection
   socket.on('connect_error', (err) => {
     console.error('WebSocket connection error: ', err.message);
-    toastr.error('WebSocket connection error. Attempting to reconnect...', 'Connection Error');
+    toastr.error('Unable to establish connection. Please check your internet connection and try again.', 'Connection Error');
     console.log('Attempting to reconnect to WebSocket...');
     setTimeout(() => {
       socket.connect();
@@ -38,11 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Attempt to re-establish connection upon disconnection
   socket.on('disconnect', () => {
     console.warn('WebSocket disconnected. Attempting to reconnect...');
-    toastr.warning('WebSocket disconnected. Attempting to reconnect...', 'Disconnected');
+    toastr.warning('Connection lost. Reconnecting...', 'Disconnected');
     setTimeout(() => {
       socket.connect();
     }, 1000); // Attempt to reconnect after 1 second
   });
+
 
   // Form validation for registration
   const registrationForm = document.querySelector('#registrationForm');

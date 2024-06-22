@@ -152,6 +152,12 @@
           <li class="nav-item">
             <a class="nav-link" href="/analytics">Analytics</a>
           </li>
+          <% if (isAdmin) { %> <!-- Check if user is an admin -->
+            <li class="nav-item">
+              <a class="nav-link" href="/admin">Admin Dashboard</a>
+            </li>
+          <% } %> <!-- End of admin check -->
+          
           <li class="nav-item">
             <a class="nav-link" href="/auth/logout">Logout</a>
           </li>
@@ -192,13 +198,13 @@
           <i class="fas fa-user"></i>
         <% } %>
       </div>
-      
-      
-      
-      
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileProfileIcon">
         <li><a class="dropdown-item" href="/profile">Settings</a></li>
+        <% if (isAdmin) { %> <!-- Check if user is an admin -->
+          <li><a class="dropdown-item" href="/admin">Admin Dashboard</a></li>
+        <% } %>
         <li><a class="dropdown-item" href="/auth/logout">Logout</a></li>
+       
       </ul>
     </div>
     <div class="notification-icon" id="mobileNotificationIcon">
@@ -212,6 +218,7 @@
     </div>
   </div>
 </header>
+
 
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
 <script>

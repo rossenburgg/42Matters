@@ -543,15 +543,19 @@
                   <img class="avatar-img" src="/img/160x160/img3.jpg" alt="Image Description">
                 </span>
               </div>
-                <h2 style="color: white;">Hi, <span><%= username %>!</span><picture>
+              <h2 style="color: white;">Hi, <span><%= username %>!</span>
+                <picture>
                   <source srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b/512.webp" type="image/webp">
                   <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f44b/512.gif" alt="👋" width="30" height="30">
-                </picture></h2>
-               
+                </picture>
+              </h2>
+              <% if (isAdmin) { %> 
+                <a href="/admin" class="badge bg-info">Admin Dashboard</a>
+              <% } %>
+              
+
             </div>
-            <div class="welcome">
-                Welcome back
-            </div>
+         
             
         </div>
        

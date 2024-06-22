@@ -23,6 +23,13 @@ router.get('/', isAuthenticated, async (req, res) => {
       res.redirect('/login');
     } else {
       console.log(`Displaying home page for user: ${user.username}`);
+      // Check if the user is an admin
+      const isAdmin = user.isAdmin || false; // Assuming isAdmin is a boolean
+      if (isAdmin) {
+        console.log("User is an admin.");
+        console.log("Admin Username:", user.username);
+      }
+
       res.render('home', {
         username: user.username,
         accountStatus: user.accountStatus,
@@ -33,7 +40,8 @@ router.get('/', isAuthenticated, async (req, res) => {
         appBaseUrl: process.env.APP_BASE_URL, // Make appBaseUrl available to the view
         items: items, // Passing items to the view
         announcements: announcements, // Passing announcements to the view
-        dailyRewardClaimed: !!rewardClaimed // Pass a boolean indicating if the daily reward was claimed
+        dailyRewardClaimed: !!rewardClaimed, // Pass a boolean indicating if the daily reward was claimed
+        isAdmin: isAdmin // Pass the isAdmin boolean to the view
       });
     }
   } catch (error) {
@@ -42,5 +50,6 @@ router.get('/', isAuthenticated, async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 module.exports = router;
