@@ -10,13 +10,15 @@ router.get('/tasks', isAuthenticated, async (req, res) => {
   const userId = req.session.userId;
   const user = await User.findById(userId)
   const username = user.username;
+  const isAdmin = user.isAdmin;
+
 
 
   try {
     // Temporarily fetch all tasks for debugging purposes
     const tasks = await Task.find({});
     console.log('Fetched tasks:', tasks);
-    res.render('tasks', { username: username, tasks });
+    res.render('tasks', { username: username, tasks,isAdmin: isAdmin     });
   } catch (err) {
     console.error('Error fetching tasks:', err.message);
     console.error(err.stack);

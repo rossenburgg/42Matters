@@ -2,14 +2,19 @@ const express = require('express');
 const Task = require('../models/Task');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const router = express.Router();
+const User = require('../models/User');
 
 // Serve the analytics dashboard page
 router.get('/analytics', async (req, res) => {
   try {
     const user = req.user; // Assuming user is available in the request object
-    const tasks = await Task.find({}); // Adjust the query as needed to fetch relevant data
+    const tasks = await Task.find({}); // Adjust the query as needed to fetch relevant 
+    const detailedUser = await User.findById(req.session.userId).exec();
+
+    const isAdmin = detailedUser.isAdmin; // Check if isAdmin property exists in user object
+
     console.log('Analytics data fetched successfully.');
-    res.render('analytics', { username: user, tasks });
+    res.render('analytics', { username: user, tasks, isAdmin: isAdmin });
   } catch (err) {
     console.error('Error fetching analytics data:', err.message);
     console.error(err.stack);

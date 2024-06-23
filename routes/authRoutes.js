@@ -6,6 +6,7 @@ const speakeasy = require('speakeasy');
 const qrcode = require('qrcode');
 const router = express.Router();
 const Notification = require('../models/Notification');
+const isAdmin = require('./middleware/isAdminMiddleware');
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -121,7 +122,7 @@ router.get('/auth/setup2fa', async (req, res) => {
           console.error(err.stack);
           throw err;
         }
-        res.render('setup2fa', { username:user.username, user, qrCodeUrl: dataUrl, twoFactorEnabled: false });
+        res.render('setup2fa', { username:user.username, isAdmin:isAdmin, user, qrCodeUrl: dataUrl, twoFactorEnabled: false });
       });
     }
   } catch (error) {

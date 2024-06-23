@@ -9,6 +9,8 @@ router.get('/history', isAuthenticated, async (req, res) => {
     try {
         const userId = req.session.userId;
         const user = await User.findById(userId);
+        const isAdmin = user.isAdmin;
+
         if (!user) {
             console.log("User not found, redirecting to login");
             return res.redirect('/login');
@@ -25,7 +27,7 @@ router.get('/history', isAuthenticated, async (req, res) => {
         // Calculate total pages
         const totalPages = Math.ceil(count / limit);
 
-        res.render('history', { username:user.username, tasks, totalPages, currentPage: page });
+        res.render('history', { username:user.username, tasks, totalPages, currentPage: page, isAdmin : isAdmin });
     } catch (error) {
         console.error(`Error fetching transaction history: ${error.message}`);
         console.error(error.stack);

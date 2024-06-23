@@ -6,6 +6,8 @@ const User = require('../models/User');
 router.get('/profile', isAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId).exec();
+    const isAdmin = user.isAdmin;
+
     if (!user) {
       console.log("User not found for profile page.");
       return res.redirect('/login');
@@ -13,6 +15,7 @@ router.get('/profile', isAuthenticated, async (req, res) => {
       console.log(`Serving deposit page for user: ${user.username}`);
       res.render('profile', {
         user: user,
+        isAdmin: isAdmin,
         referral: user.referralCode,
         username: user.username,
         walletBalance: user.balance,

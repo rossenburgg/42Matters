@@ -9,6 +9,7 @@ router.get('/starting', isAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId).exec();
     const items = await Item.find({}).exec(); // Fetching all items from the database
+    const isAdmin = user.isAdmin;
 
     if (!user) {
       console.log("Redirecting to login, user not found.");
@@ -18,6 +19,7 @@ router.get('/starting', isAuthenticated, async (req, res) => {
       res.render('starting', {
         user: user,
         username: user.username,
+        isAdmin: isAdmin,
         walletBalance: user.balance,
         commission: user.commission,
         items: items, // Passing items to the view
