@@ -4,7 +4,7 @@ const DailyReward = require('../models/DailyReward');
 const User = require('../models/User');
 const { isAuthenticated } = require('./middleware/authMiddleware');
 
-const DAILY_REWARD_AMOUNT = 10; // Fixed daily reward amount
+const DAILY_REWARD_AMOUNT = 0.2; // Fixed daily reward amount
 
 router.post('/api/claim-daily-reward', isAuthenticated, async (req, res) => {
   try {

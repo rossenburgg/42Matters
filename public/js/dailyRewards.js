@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // Handle daily reward claim
     const claimRewardButton = document.querySelector('.modal-body .btn-primary');
+    
     if (!claimRewardButton) return;
 
     claimRewardButton.addEventListener('click', function() {
@@ -14,9 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => {
             if (!response.ok) {
                 if (response.status === 400) {
-                    response.json().then(data => {
-                        toastr.error(data.message);
-                        console.error('Failed to claim daily reward:', data.message);
+                    return response.json().then(data => {
+                        throw new Error(data.message);
                     });
                 } else {
                     throw new Error('Failed to claim the daily reward');
@@ -32,10 +34,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('balance').textContent = data.newBalance;
                     console.log('Daily reward claimed successfully, balance updated.');
                 }
+                claimRewardButton.classList.add('disabled');
+                claimRewardButton.innerText = 'Reward claimed';
             }
         })
         .catch(error => {
-            toastr.error('An error occurred while claiming the daily reward.');
+            toastr.error(error.message);
             console.error('Error claiming daily reward:', error.message, error.stack);
         });
     });

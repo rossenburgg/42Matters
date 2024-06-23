@@ -40,6 +40,7 @@ userSchema.pre('save', function(next) {
 // Method to update user's balance
 userSchema.methods.updateBalance = async function(amount) {
   this.balance += amount;
+  this.balance = parseFloat(this.balance.toFixed(2)); // Round to two decimal places
   try {
     await this.save();
     console.log(`Balance updated successfully for user: ${this.username}`);

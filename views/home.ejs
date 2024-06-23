@@ -739,23 +739,7 @@
     dailyRewardBtn.innerText = 'Reward claimed';
   }
 
-  document.getElementById('claimDailyReward').addEventListener('click', function() {
-    fetch('/api/claim-daily-reward', { method: 'POST' })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          toastr.success('Daily reward claimed!');
-          dailyRewardBtn.classList.add('disabled');
-          dailyRewardBtn.innerText = 'Reward claimed';
-        } else {
-          toastr.error('Failed to claim daily reward');
-        }
-      })
-      .catch(error => {
-        console.error('Error claiming daily reward:', error);
-        toastr.error('Failed to claim daily reward');
-      });
-  });
+ 
 });
 
 </script>
