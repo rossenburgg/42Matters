@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.13/lottie.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/intro.min.js"></script>
   <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -521,6 +523,7 @@
             height: 250px; /* Set the height of the container */
             margin: 0 auto; /* Center the container horizontally */
         }
+     
 </style>
 
 </head>
@@ -667,8 +670,8 @@
             <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/linkedin-44-432357.png" alt="LinkedIn"></a>
             
           </div>
-          <button class="start-btn">Start</button>
-        
+          <button class="start-btn" id="startButton" >Start</button>
+         
         </div>
       </div>
       <div id="lottie-animation"></div>
@@ -842,6 +845,35 @@
             autoplay: true,
             path: '/Animations/commission.json' // Replace with the path to your Lottie animation file
         });
+
+      
+        document.addEventListener("DOMContentLoaded", function() {
+    // Check if the walkthrough has been shown before
+    if (!localStorage.getItem("walkthroughShown")) {
+      // Show the walkthrough using intro.js
+      introJs().setOptions({
+        steps: [
+          {
+            intro: "Hang on <%= username %>!  Welcome to 42Matters. Let me show you around."
+          },
+          {
+            element: document.querySelector('.menu-list'),
+            intro: "Here is the menu list. You can navigate to different sections from here."
+          },
+          {
+            element: document.querySelector('.balance-cards'),
+            intro: "These are your balance cards. They show your current balances."
+          }
+          // Add more steps as needed
+        ]
+      }).start();
+
+      // Set a flag in localStorage to indicate the walkthrough has been shown
+      localStorage.setItem("walkthroughShown", "true");
+    }
+  });
+        
 </script>
+
 </body>
 </html>
