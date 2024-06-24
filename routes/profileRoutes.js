@@ -17,6 +17,8 @@ router.get('/profile', isAuthenticated, async (req, res) => {
         user: user,
         isAdmin: isAdmin,
         referral: user.referralCode,
+        phone: user.phone,
+        gender: user.gender,
         username: user.username,
         walletBalance: user.balance,
         commission: user.commission,

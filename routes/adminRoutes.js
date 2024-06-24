@@ -45,7 +45,7 @@ router.get('/admin/announcements', [isAuthenticated, isAdminMiddleware], (req, r
 });
 
 router.get('/admin', [isAuthenticated, isAdminMiddleware], (req, res) => {
-  res.render('admin/home');
+  res.redirect('/admin/dashboard');
 });
 
 // Route to handle posting of announcements
@@ -55,7 +55,7 @@ router.post('/admin/announcements', [isAuthenticated, isAdminMiddleware], async 
     const announcement = new Announcement({ title, content });
     await announcement.save();
     console.log('Announcement created successfully');
-    res.redirect('/admin/dashboard');
+    // res.redirect('/admin/dashboard');
   } catch (error) {
     console.error('Error creating announcement:', error);
     res.status(500).send('Internal Server Error');

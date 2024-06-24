@@ -381,43 +381,39 @@
           </div>
           <!-- End Form -->
 
-        <!-- Form -->
-<div class="row mb-4">
-  <label for="firstNameLabel" class="text-white col-sm-3 col-form-label form-label">Full name <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Displayed on public forums, such as Front."></i></label>
-  <div class="col-sm-9">
-      <div class="input-group">
-          <input type="text" class="form-control" name="firstName" id="firstNameLabel" placeholder="Clarice" aria-label="Clarice" >
-          <input type="text" class="form-control" name="lastName" id="lastNameLabel" placeholder="Boone" aria-label="Boone" >
-      </div>
-  </div>
-</div>
-<!-- End Form -->
-
-<!-- Form -->
-<div class="row mb-4">
-  <label for="referralCodeLabel" class="col-sm-3 col-form-label form-label text-white">Referral code</label>
-  <div class="col-sm-9">
-      <div class="input-group">
-          <input type="text" class="form-control" name="referralCode" id="referralCode" placeholder="<%= user.referralCode %>" aria-label="<%= user.referralCode %>" value="<%= user.referralCode %>" disabled>
-          <div class="input-group-append">
-              <button class="btn btn-outline-secondary" style="background-color: rgba(46, 45, 45, 0.747);" type="button" id="copyReferralCode">
-                  <i class="fas fa-copy"></i>
-              </button>
+                  <!-- Form -->
+          <div class="row mb-4">
+            <label for="firstNameLabel" class="text-white col-sm-3 col-form-label form-label">Full name <i class="bi-question-circle text-body ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Displayed on public forums, such as Front."></i></label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="firstName" id="firstNameLabel" placeholder="Clarice" aria-label="Clarice" >
+                    <input type="text" class="form-control" name="lastName" id="lastNameLabel" placeholder="Boone" aria-label="Boone" >
+                </div>
+            </div>
           </div>
-      </div>
-  </div>
-</div>
-<!-- End Form -->
+          <!-- End Form -->
+
+          <!-- Form -->
+          <div class="row mb-4">
+            <label for="referralCodeLabel" class="col-sm-3 col-form-label form-label text-white">Referral code</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="referralCode" id="referralCode" placeholder="<%= user.referralCode %>" aria-label="<%= user.referralCode %>" value="<%= user.referralCode %>" disabled>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" style="background-color: rgba(46, 45, 45, 0.747);" type="button" id="copyReferralCode">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+          </div>
+          </form>
+          <!-- End Form -->
 
           <!-- End Form -->
 
           <!-- Form -->
-          <div class="js-add-field row mb-4"
-               data-hs-add-field-options='{
-                  "template": "#addPhoneFieldTemplate",
-                  "container": "#addPhoneFieldContainer",
-                  "defaultCreated": 0
-                }'>
+          <div class="js-add-field row mb-4">
             <label for="phoneLabel" class="col-sm-3 col-form-label form-label text-white">Phone <span class="form-label-secondary">(Optional)</span></label>
 
             <div class="col-sm-9">
@@ -425,7 +421,7 @@
                 <input type="text" class="js-input-mask form-control" name="phone" id="phoneLabel" placeholder="+x(xxx)xxx-xx-xx" aria-label="+x(xxx)xxx-xx-xx" 
                        data-hs-mask-options='{
                          "mask": "+{0}(000)000-00-00"
-                       }'>
+                       }' value="<%= user.phone %>" disabled>
 
                 <!-- Select -->
                 <div class="tom-select-custom">
@@ -448,77 +444,44 @@
           </div>
           <!-- End Form -->
 
-          <!-- Add Phone Input Field -->
-          <div id="addPhoneFieldTemplate" style="display: none; position: relative;">
-            <div class="input-group input-group-add-field">
-              <input type="text" class="js-input-mask-dynamic form-control" data-name="additionlPhone" placeholder="+x(xxx)xxx-xx-xx" aria-label="+x(xxx)xxx-xx-xx"
-                     data-hs-mask-options='{
-                       "mask": "+{0}(000)000-00-00"
-                     }'>
-
-              <!-- Select -->
-              <div class="tom-select-custom">
-                <select class="js-select-dynamic form-select" data-name="additionlPhoneSelect"
-                        data-hs-tom-select-options='{
-                            "width": "8rem",
-                            "hideSearch": true
-                          }'>
-                  <option value="Mobile" selected>Mobile</option>
-                  <option value="Home">Home</option>
-                  <option value="Work">Work</option>
-                  <option value="Fax">Fax</option>
-                  <option value="Direct">Direct</option>
-                </select>
-              </div>
-              <!-- End Select -->
-            </div>
-
-            <a class="js-delete-field input-group-add-field-delete" href="javascript:;">
-              <i class="bi-x-lg"></i>
-            </a>
-          </div>
-          <!-- End Add Phone Input Field -->
-
+         
           <!-- Form -->
-          <div class="row mb-4" >
+          <div class="row mb-4">
             <label class="col-sm-3 col-form-label form-label text-white">Gender</label>
-
-            <div class="col-sm-9" >
-              <div class="input-group input-group-md-down-break" >
-                <!-- Radio Check -->
+            <div class="col-sm-9">
+              <div class="input-group input-group-md-down-break">
+          
+                <!-- Radio Check for Male -->
                 <label class="form-control" for="genderTypeRadio1" style="background-color: rgba(0, 0, 0, 0.39);">
                   <span class="form-check">
-                    <input type="radio" class="form-check-input" name="genderTypeRadio" id="genderTypeRadio1">
+                    <input type="radio" class="form-check-input" name="genderTypeRadio" id="genderTypeRadio1" value="Male" <%= gender === 'Male' ? 'checked' : '' %>>
                     <span class="form-check-label text-white">Male</span>
                   </span>
                 </label>
-                <!-- End Radio Check -->
-
-                <!-- Radio Check -->
+                <!-- End Radio Check for Male -->
+          
+                <!-- Radio Check for Female -->
                 <label class="form-control" for="genderTypeRadio2" style="background-color: rgba(0, 0, 0, 0.39);">
                   <span class="form-check">
-                    <input type="radio" class="form-check-input" name="genderTypeRadio" id="genderTypeRadio2" checked>
+                    <input type="radio" class="form-check-input" name="genderTypeRadio" id="genderTypeRadio2" value="Female" <%= gender === 'Female' ? 'checked' : '' %>>
                     <span class="form-check-label text-white">Female</span>
                   </span>
                 </label>
-                <!-- End Radio Check -->
-
-                <!-- Radio Check -->
+                <!-- End Radio Check for Female -->
+          
+                <!-- Radio Check for Other -->
                 <label class="form-control" for="genderTypeRadio3" style="background-color: rgba(0, 0, 0, 0.39);">
                   <span class="form-check">
-                    <input type="radio" class="form-check-input" name="genderTypeRadio" id="genderTypeRadio3">
+                    <input type="radio" class="form-check-input" name="genderTypeRadio" id="genderTypeRadio3" value="Other" <%= gender === 'Other' ? 'checked' : '' %>>
                     <span class="form-check-label text-white">Other</span>
                   </span>
                 </label>
-                <!-- End Radio Check -->
+                <!-- End Radio Check for Other -->
               </div>
             </div>
           </div>
-          <!-- End Form -->
-
-        
-        </form>
-      </div>
+          </div>
+          
       <!-- End Body -->
 
       <!-- Footer -->
