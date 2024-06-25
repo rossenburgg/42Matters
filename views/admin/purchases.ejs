@@ -11,6 +11,7 @@
     }
     .container {
       padding: 20px;
+      color: white;
     }
     h1 {
       color: #1DB954;
@@ -87,9 +88,9 @@
         <% pendingPurchases.forEach(function(purchase) { %>
           <div class="list-group-item purchase-card" id="purchase-<%= purchase._id %>">
             <div>
-              <h5 class="mb-1">Item: <%= purchase.itemId ? purchase.itemId.name : 'Unknown Item' %></h5>
-              <p class="mb-1">Price: <%= purchase.itemId ? purchase.itemId.price : 'N/A' %> USDT</p>
-              <p class="mb-1">Buyer: <%= purchase.userId ? purchase.userId.username : 'Unknown User' %></p>
+              <h5 class="mb-1 text-white">Item: <%= purchase.itemId ? purchase.itemId.name : 'Unknown Item' %></h5>
+              <p class="mb-1 text-white">Price: <%= purchase.itemId ? purchase.itemId.price : 'N/A' %> USDT</p>
+              <p class="mb-1 text-white">Buyer: <%= purchase.userId ? purchase.userId.username : 'Unknown User' %></p>
             </div>
             <div class="purchase-actions">
               <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal" data-purchase-id="<%= purchase._id %>">Confirm</button>
