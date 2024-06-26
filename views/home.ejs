@@ -523,7 +523,59 @@
             height: 250px; /* Set the height of the container */
             margin: 0 auto; /* Center the container horizontally */
         }
-     
+        .start-btn {
+  position: relative;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.start-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.btn-content {
+  position: relative;
+  z-index: 1;
+}
+
+.shiny-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.1) 40%,
+    rgba(255,255,255,0.6) 50%,
+    rgba(255,255,255,0.1) 60%,
+    rgba(255,255,255,0) 100%
+  );
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -50%;
+    top: -50%;
+  }
+  100% {
+    left: 150%;
+    top: 150%;
+  }
+}
 </style>
 
 </head>
@@ -567,7 +619,7 @@
 
     <div class="menu-list">
       <div class="menu-item">
-        <a href="/starting">
+        <a href="/services">
           <div class="card card-transition">
             <i class="fas fa-concierge-bell"></i>
             <span>Service</span>
@@ -575,7 +627,7 @@
         </a>
       </div>
       <div class="menu-item">
-        <a href="/event">
+        <a href="/events">
           <div class="card card-transition">
             <i class="fas fa-calendar-alt"></i>
             <span>Event</span>
@@ -656,26 +708,24 @@
           </div>
         </div>
       </div>
-
       <div class="card glassy-card mt-2">
         <div class="optimization">
-          <h3>Start Optimization <span>0 /40</span></h3>
-          <div class="icons">
-            <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/skype-153-675721.png" alt="Slack"></a>
-            <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png" alt="GitHub"></a>
-            <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/skype-153-675721.png" alt="Skype"></a>
-            <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/spotify-11-432546.png" alt="Spotify"></a>
-            <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/netflix-11-432539.png" alt="Netflix"></a>
-            <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/dropbox-27-433365.png" alt="Dropbox"></a>
-            <a href="#"><img src="https://cdn.iconscout.com/icon/free/png-256/linkedin-44-432357.png" alt="LinkedIn"></a>
-            
+          <h3>Start Optimization <span id="optimizationProgress">0/40</span></h3>
+          <div id="lottie-animation"></div>
+          <p class="text-white">Ready to supercharge your device? Let's get optimizing!</p>
+          <div id="appIcons" class="icons" style="display: none;">
+            <!-- App icons will be dynamically added here -->
           </div>
-          <button class="start-btn" id="startButton" >Start</button>
-         
+          <button class="start-btn shiny-btn" id="startButton">
+            <span class="btn-content"><i class="fas fa-rocket"></i> Boost Now!</span>
+          </button>
+          <div id="completionMessage" style="display: none;">
+            <h4>Congratulations!</h4>
+            <p class="text-white">You've completed all optimizations for today.</p>
+          </div>
         </div>
       </div>
-      <div id="lottie-animation"></div>
-
+      
          <!-- Offcanvas -->
       <div class="offcanvas offcanvas-start" tabindex="-1" id="settingsOffcanvas" aria-labelledby="offcanvasExampleLabel" data-bs-backdrop="false">
         <div class="offcanvas-header">
@@ -874,6 +924,164 @@
   });
         
 </script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const startButton = document.getElementById('startButton');
+  const appIcons = document.getElementById('appIcons');
+  const optimizationProgress = document.getElementById('optimizationProgress');
+  const completionMessage = document.getElementById('completionMessage');
+  const lottieAnimation = document.getElementById('lottie-animation');
 
+  const apps = [
+      { name: 'Slack', icon: 'https://cdn.iconscout.com/icon/free/png-256/skype-153-675721.png' },
+      { name: 'GitHub', icon: 'https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png' },
+      { name: 'Skype', icon: 'https://cdn.iconscout.com/icon/free/png-256/skype-153-675721.png' },
+      { name: 'Spotify', icon: 'https://cdn.iconscout.com/icon/free/png-256/spotify-11-432546.png' },
+      { name: 'Netflix', icon: 'https://cdn.iconscout.com/icon/free/png-256/netflix-11-432539.png' },
+      { name: 'Dropbox', icon: 'https://cdn.iconscout.com/icon/free/png-256/dropbox-27-433365.png' },
+      { name: 'LinkedIn', icon: 'https://cdn.iconscout.com/icon/free/png-256/linkedin-44-432357.png' },
+      { name: 'Facebook', icon: 'https://cdn.iconscout.com/icon/free/png-256/facebook-262-721949.png' },
+      { name: 'Twitter', icon: 'https://cdn.iconscout.com/icon/free/png-256/twitter-241-721979.png' },
+      { name: 'Instagram', icon: 'https://cdn.iconscout.com/icon/free/png-256/instagram-188-498425.png' },
+      { name: 'WhatsApp', icon: 'https://cdn.iconscout.com/icon/free/png-256/whatsapp-43-189795.png' },
+      { name: 'Telegram', icon: 'https://cdn.iconscout.com/icon/free/png-256/telegram-3-226554.png' },
+      { name: 'TikTok', icon: 'https://cdn.iconscout.com/icon/free/png-256/tiktok-2270636-1891163.png' },
+      { name: 'YouTube', icon: 'https://cdn.iconscout.com/icon/free/png-256/youtube-85-226402.png' },
+      { name: 'Gmail', icon: 'https://cdn.iconscout.com/icon/free/png-256/gmail-2981844-2476484.png' },
+      { name: 'Outlook', icon: 'https://cdn.iconscout.com/icon/free/png-256/outlook-1-216095.png' },
+      { name: 'Chrome', icon: 'https://cdn.iconscout.com/icon/free/png-256/chrome-2489187-2082910.png' },
+      { name: 'Firefox', icon: 'https://cdn.iconscout.com/icon/free/png-256/firefox-4-226075.png' },
+      { name: 'Safari', icon: 'https://cdn.iconscout.com/icon/free/png-256/safari-2489188-2082911.png' },
+      { name: 'Edge', icon: 'https://cdn.iconscout.com/icon/free/png-256/edge-2489189-2082912.png' },
+      { name: 'Adobe', icon: 'https://cdn.iconscout.com/icon/free/png-256/adobe-2-226074.png' },
+      { name: 'Photoshop', icon: 'https://cdn.iconscout.com/icon/free/png-256/photoshop-2522523-2132694.png' },
+      { name: 'Illustrator', icon: 'https://cdn.iconscout.com/icon/free/png-256/illustrator-2522529-2132700.png' },
+      { name: 'Word', icon: 'https://cdn.iconscout.com/icon/free/png-256/word-2522716-2132823.png' },
+      { name: 'Excel', icon: 'https://cdn.iconscout.com/icon/free/png-256/excel-2522715-2132822.png' },
+      { name: 'PowerPoint', icon: 'https://cdn.iconscout.com/icon/free/png-256/powerpoint-2522717-2132824.png' },
+      { name: 'OneNote', icon: 'https://cdn.iconscout.com/icon/free/png-256/onenote-2522719-2132826.png' },
+      { name: 'Teams', icon: 'https://cdn.iconscout.com/icon/free/png-256/microsoft-teams-2522463-2132634.png' },
+      { name: 'Zoom', icon: 'https://cdn.iconscout.com/icon/free/png-256/zoom-2489192-2082915.png' },
+      { name: 'Discord', icon: 'https://cdn.iconscout.com/icon/free/png-256/discord-2474808-2056094.png' },
+      { name: 'Trello', icon: 'https://cdn.iconscout.com/icon/free/png-256/trello-2752053-2284870.png' },
+      { name: 'Asana', icon: 'https://cdn.iconscout.com/icon/free/png-256/asana-226537-1840377.png' },
+      { name: 'Notion', icon: 'https://cdn.iconscout.com/icon/free/png-256/notion-2489183-2082906.png' },
+      { name: 'Evernote', icon: 'https://cdn.iconscout.com/icon/free/png-256/evernote-226540-1840380.png' },
+      { name: 'Slack', icon: 'https://cdn.iconscout.com/icon/free/png-256/slack-2752072-2284889.png' },
+      { name: 'VS Code', icon: 'https://cdn.iconscout.com/icon/free/png-256/visual-studio-code-3251603-2724650.png' },
+      { name: 'Sublime Text', icon: 'https://cdn.iconscout.com/icon/free/png-256/sublime-text-3521747-2945191.png' },
+      { name: 'PyCharm', icon: 'https://cdn.iconscout.com/icon/free/png-256/pycharm-3521718-2945162.png' },
+      { name: 'IntelliJ IDEA', icon: 'https://cdn.iconscout.com/icon/free/png-256/intellij-idea-3521743-2945187.png' },
+      { name: 'Android Studio', icon: 'https://cdn.iconscout.com/icon/free/png-256/android-studio-3521741-2945185.png' }
+    ];
+
+  let completedApps = 0;
+  let currentApps = [];
+
+  startButton.addEventListener('click', function() {
+    startButton.style.animation = 'fadeOut 0.5s';
+    lottieAnimation.style.animation = 'fadeOut 0.5s';
+    setTimeout(() => {
+      startButton.style.display = 'none';
+      lottieAnimation.style.display = 'none';
+      appIcons.style.display = 'flex';
+      initializeAppIcons();
+    }, 500);
+  });
+
+  function initializeAppIcons() {
+    currentApps = apps.slice(0, 7);
+    renderAppIcons();
+  }
+
+  function renderAppIcons() {
+    appIcons.innerHTML = '';
+    currentApps.forEach(app => {
+      const iconElement = createAppIcon(app);
+      appIcons.appendChild(iconElement);
+    });
+  }
+
+  function createAppIcon(app) {
+    const iconElement = document.createElement('a');
+    iconElement.href = '#';
+    iconElement.innerHTML = `<img src="${app.icon}" alt="${app.name}">`;
+    iconElement.addEventListener('click', (e) => {
+      e.preventDefault();
+      showAppModal(app);
+    });
+    return iconElement;
+  }
+
+  function showAppModal(app) {
+    const modal = document.createElement('div');
+    modal.className = 'modal fade';
+    modal.innerHTML = `
+      <div class="modal-dialog mt-10">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-white">${app.name} Optimization</h5>
+      <button type="button" class="btn-close text-white" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body text-white text-center">
+      <img src="${app.icon}" class="img-fluid mb-3" style="width: 100px; height: 100px;">
+      <p>Are you sure you want to optimize ${app.name}?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-primary confirm-optimization">Confirm</button>
+    </div>
+  </div>
+</div>
+
+    `;
+    document.body.appendChild(modal);
+    const modalInstance = new bootstrap.Modal(modal);
+    modalInstance.show();
+
+    modal.querySelector('.confirm-optimization').addEventListener('click', () => {
+      completeAppOptimization(app);
+      modalInstance.hide();
+      modal.remove();
+    });
+
+    modal.addEventListener('hidden.bs.modal', () => {
+      modal.remove();
+    });
+  }
+
+  function completeAppOptimization(app) {
+    completedApps++;
+    optimizationProgress.textContent = `${completedApps}/40`;
+    
+    const index = currentApps.findIndex(a => a.name === app.name);
+    if (index !== -1) {
+      currentApps.splice(index, 1);
+      if (completedApps < 40) {
+        const newApp = apps.find(a => !currentApps.includes(a) && a.name !== app.name);
+        if (newApp) {
+          currentApps.push(newApp);
+        }
+      }
+      renderAppIcons();
+    }
+
+    if (completedApps === 40) {
+      showCompletionMessage();
+    }
+  }
+
+  function showCompletionMessage() {
+    appIcons.style.display = 'none';
+    completionMessage.style.display = 'block';
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+});
+  </script>
 </body>
 </html>

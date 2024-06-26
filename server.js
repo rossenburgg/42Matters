@@ -9,6 +9,9 @@ const homeRoutes = require('./routes/homeRoutes'); // Added homeRoutes
 const walletInfoRoutes = require('./routes/walletInfoRoutes'); // Import walletInfoRoutes
 const depositRoutes = require('./routes/depositRoutes'); // Import depositRoutes
 const profileRoutes = require('./routes/profileRoutes'); // Import profil;eRoutes
+const eventsRoutes = require('./routes/eventsRoutes'); // Import eventsRoute
+const servicesRoutes = require('./routes/servicesRoutes'); // Import servicesRoutes
+
 
 const taskRoutes = require('./routes/taskRoutes'); // Import taskRoutes
 const historyRoutes = require('./routes/historyRoutes'); // Import historyRoutes
@@ -188,6 +191,12 @@ app.use(walletInfoRoutes);
 // Deposit Routes - Serve deposit page and functionality
 app.use(depositRoutes);
 
+// event Routes 
+app.use(eventsRoutes);
+
+// Services Routes 
+app.use(servicesRoutes);
+
 app.use(profileRoutes);
 
 // Task Routes - Serve task management functionality
@@ -210,6 +219,7 @@ app.use(userSettingsRoutes);
 
 // Referral Routes - Serve referral system functionality
 app.use(referralRoutes);
+
 
 // Admin Routes - Serve admin dashboard and functionalities
 app.use(adminRoutes);
