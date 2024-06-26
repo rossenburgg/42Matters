@@ -7,6 +7,7 @@ const Task = require('../models/Task'); // Ensure Task model is imported
 const Announcement = require('../models/Announcement'); // Import the Announcement model
 const { isAuthenticated } = require('./middleware/authMiddleware');
 const isAdminMiddleware = require('./middleware/isAdminMiddleware');
+const ITEMS_PER_PAGE = 10; // Example value, adjust as per your pagination needs
 
 // Admin Dashboard Route
 router.get('/admin/dashboard', [isAuthenticated, isAdminMiddleware], (req, res) => {
@@ -27,16 +28,56 @@ router.get('/admin/users', [isAuthenticated, isAdminMiddleware], async (req, res
 // Admin Purchases Management Route
 router.get('/admin/purchases', [isAuthenticated, isAdminMiddleware], async (req, res) => {
   try {
-    const pendingPurchases = await Purchase.find({ status: 'pending' })
-      .populate('userId', 'username') // Ensure to populate the username of the user
-      .populate('itemId', 'name price') // Ensure to populate the name and price of the item
+    let { page = 1, search = '' } = req.query;
+    page = parseInt(page); // Convert page to integer
+
+    // Ensure page is within valid range
+    if (page < 1) {
+      page = 1;
+    }
+
+    const query = search ? { 'userId': { $in: await User.find({ username: { $regex: search, $options: 'i' } }).select('_id') }, status: 'pending' } : { status: 'pending' };
+
+    const totalPurchases = await Purchase.countDocuments(query);
+    const totalPages = Math.ceil(totalPurchases / ITEMS_PER_PAGE);
+
+    // Ensure page is within valid range after calculating totalPages
+    if (page > totalPages) {
+      page = totalPages;
+    }
+
+    const skipValue = Math.max((page - 1) * ITEMS_PER_PAGE, 0); // Ensure skip is non-negative
+
+    const pendingPurchases = await Purchase.find(query)
+      .populate('userId', 'username')
+      .populate('itemId', 'name price')
+      .skip(skipValue)
+      .limit(ITEMS_PER_PAGE)
       .exec();
-    res.render('admin/purchases', { pendingPurchases });
+
+    // Send JSON response for AJAX requests
+    if (req.headers['x-requested-with'] === 'XMLHttpRequest') {
+      return res.json({
+        pendingPurchases,
+        currentPage: page,
+        totalPages,
+      });
+    }
+
+    // Render HTML for regular requests
+    res.render('admin/purchases', {
+      pendingPurchases,
+      currentPage: page,
+      totalPages,
+      searchQuery: search,
+    });
+
   } catch (error) {
     console.error('Error fetching pending purchases:', error);
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 
 // Admin Announcements Route

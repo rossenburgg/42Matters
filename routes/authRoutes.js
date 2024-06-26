@@ -7,6 +7,7 @@ const qrcode = require('qrcode');
 const router = express.Router();
 const Notification = require('../models/Notification');
 const isAdmin = require('./middleware/isAdminMiddleware');
+const toastr = require('toastr'); // Import Toastr library
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -153,6 +154,7 @@ router.post('/auth/setup2fa/verify', async (req, res) => {
       res.redirect('/');
     } else {
       res.status(401).send('Invalid 2FA token');
+      toastr.error("Invalid 2FA token")
     }
   } catch (error) {
     console.error('2FA verification error:', error);
@@ -162,13 +164,12 @@ router.post('/auth/setup2fa/verify', async (req, res) => {
 });
 
 router.get('/auth/2fa', async (req, res) => {
-  const userId = req.session.userId;
-  const user = await User.findById(userId);
-
+  const user = await User.findById(req.session.tempUserId); // Use tempUserId for verification
+  const isAdmin = user.isAdmin;
   if (!req.session.tempUserId) {
     return res.redirect('/auth/login');
   }
-  res.render('2fa', { username: user.username });
+
 });
 
 

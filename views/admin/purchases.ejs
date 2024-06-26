@@ -76,6 +76,22 @@
       gap: 10px;
       justify-content: flex-end;
     }
+    .search-pagination {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    #searchInput {
+      flex: 1;
+      margin-right: 10px;
+    }
+    .pagination-controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+    
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -83,6 +99,10 @@
 <body>
   <div class="container mt-5">
     <h1>Pending Purchases</h1>
+    <div class="search-pagination">
+      <input type="text" id="searchInput" placeholder="Search by username" />
+      <button id="searchButton" class="btn btn-primary">Search</button>
+    </div>
     <div class="list-group">
       <% if (pendingPurchases && pendingPurchases.length > 0) { %>
         <% pendingPurchases.forEach(function(purchase) { %>
@@ -102,6 +122,9 @@
       <% } else { %>
         <p class="no-pending-purchases">No pending purchases.</p>
       <% } %>
+    </div>
+    <div class="pagination-controls" id="paginationControls">
+      <!-- Pagination controls will be dynamically updated via JavaScript -->
     </div>
   </div>
 
@@ -143,6 +166,7 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
@@ -178,6 +202,8 @@
           if (data.success) {
             toastr.success('Purchase confirmed successfully.');
             document.getElementById('purchase-' + purchaseId).remove();
+            const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+            confirmModal.hide();
             checkPendingPurchases();
           } else {
             toastr.error('Failed to confirm purchase.');
@@ -196,6 +222,8 @@
           if (data.success) {
             toastr.success('Purchase rejected successfully.');
             document.getElementById('purchase-' + purchaseId).remove();
+            const rejectModal = bootstrap.Modal.getInstance(document.getElementById('rejectModal'));
+            rejectModal.hide();
             checkPendingPurchases();
           } else {
             toastr.error('Failed to reject purchase.');
@@ -209,10 +237,90 @@
 
     function checkPendingPurchases() {
       const purchaseCards = document.querySelectorAll('.purchase-card');
-      if (purchaseCards.length === 0) {
-        document.querySelector('.no-pending-purchases').style.display = 'block';
+      const noPendingPurchasesElement = document.querySelector('.no-pending-purchases');
+
+      if (purchaseCards.length === 0 && noPendingPurchasesElement) {
+        noPendingPurchasesElement.style.display = 'block';
+      } else if (noPendingPurchasesElement) {
+        noPendingPurchasesElement.style.display = 'none';
       }
     }
+   
+
+    let currentPage = <%= currentPage %>;
+const totalPages = <%= totalPages %>;
+
+/// Function to load purchases based on current page and search query
+function loadPurchases(page = currentPage, search = '') {
+  fetch(`/admin/purchases?page=${page}&search=${search}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    .then(response => response.json())
+    .then(data => {
+      const { pendingPurchases, currentPage } = data;
+
+      // Update purchases list
+      const purchaseContainer = document.querySelector('.list-group'); // Target the list group container
+      if (!purchaseContainer) {
+        console.error('Error: Purchase list element not found.');
+        return;
+      }
+
+      if (pendingPurchases && pendingPurchases.length > 0) {
+        purchaseContainer.innerHTML = pendingPurchases.map(purchase => `
+          <!-- Render purchase cards -->
+          <div class="list-group-item purchase-card">
+            <div>
+              <h5 class="mb-1 text-white">Item: ${purchase.itemId ? purchase.itemId.name : 'Unknown Item'}</h5>
+              <p class="mb-1 text-white">Price: ${purchase.itemId ? purchase.itemId.price : 'N/A'} USDT</p>
+              <p class="mb-1 text-white">Buyer: ${purchase.userId ? purchase.userId.username : 'Unknown User'}</p>
+            </div>
+            <div class="purchase-actions">
+              <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal" data-purchase-id="${purchase._id}">Confirm</button>
+              <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal" data-purchase-id="${purchase._id}">Reject</button>
+            </div>
+            <small>Purchase Date: ${new Date(purchase.createdAt).toDateString()}</small>
+          </div>
+        `).join('');
+      } else {
+        purchaseContainer.innerHTML = `<p class="no-pending-purchases">No pending purchases.</p>`;
+      }
+
+      // Update pagination controls
+      updatePaginationControls(currentPage);
+
+    })
+    .catch(error => {
+      console.error('Error loading purchases:', error);
+      toastr.error('Error loading purchases.');
+    });
+}
+
+// Function to update pagination controls
+function updatePaginationControls(currentPage) {
+  const paginationControls = document.getElementById('paginationControls');
+  if (!paginationControls) return;
+
+  // Generate pagination buttons
+  let paginationHTML = '';
+  if (currentPage > 1) {
+    paginationHTML += `<button class="btn btn-secondary" onclick="loadPurchases(${currentPage - 1}, '${document.getElementById('searchInput').value}')">Previous</button>`;
+  }
+  paginationHTML += `<span>Page ${currentPage}</span>`;
+  if (currentPage < totalPages) {
+    paginationHTML += `<button class="btn btn-secondary" onclick="loadPurchases(${currentPage + 1}, '${document.getElementById('searchInput').value}')">Next</button>`;
+  }
+
+  paginationControls.innerHTML = paginationHTML;
+}
+
+// Event listener for search button
+document.getElementById('searchButton').addEventListener('click', function() {
+  const searchQuery = document.getElementById('searchInput').value.trim();
+  loadPurchases(1, searchQuery);
+});
+
+// Initial load of purchases
+loadPurchases(currentPage, '<%= searchQuery || '' %>');
+
   </script>
 </body>
 </html>
